@@ -2,7 +2,7 @@ var root = __dirname,
     express = require("express"),
     path = require("path"),
     mongoose = require("mongoose"),
-    db_creds = require("../conf/db_conf.json");
+    db_creds = require("../conf/db_conf.json"),
 
 var app = express();
 
@@ -14,6 +14,14 @@ mongoose.connect(("mongodb://%username%:%password%@ds053300.mongolab.com:53300/s
 console.log("Database successfully connected!");
 
 app.get("/dashboard", function(req, res) {
+    res.send("It works!");
+});
+
+app.get("/search", function(req, res) {
+    return searchForItem(req.query.lat, req.query.long, res);
+});
+
+app.get("/about", function(req, res) {
     res.send("It works!");
 });
 
