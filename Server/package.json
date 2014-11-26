@@ -1,0 +1,28 @@
+{
+  "name": "Solobuy_Server",
+  "version": "0.0.1",
+  "description": "Server / API for Solobuy",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://madelinecameron@github.com/RickNollins/Solobuy-MVP.git"
+  },
+  "keywords": [
+    "solobuy"
+  ],
+  "author": "Solobuy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RickNollins/Solobuy-MVP/issues"
+  },
+  "homepage": "https://github.com/RickNollins/Solobuy-MVP",
+  "dependencies": {
+    "express": "^4.10.4"
+  }
+}
