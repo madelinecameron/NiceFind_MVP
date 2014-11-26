@@ -1,0 +1,194 @@
+{
+  "location": {
+    "bounds_max_lat": 40.62465,
+    "bounds_max_long": -89.12249,
+    "bounds_min_lat": 35.99274,
+    "bounds_min_long": -95.76503,
+    "code": "USA-MO",
+    "full_name": "Missouri",
+    "level": "state",
+    "short_name": "MO"
+  },
+  "success": true
+}
+//////////////////////////////////////////////
+{
+      "code": "SANT",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Antiques"
+    },
+    {
+      "code": "SAPP",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Apparel"
+    },
+    {
+      "code": "SAPL",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Appliances"
+    },
+{
+      "code": "SANC",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Art & Crafts"
+    },
+    {
+      "code": "SKID",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Babies & Kids"
+    },
+    {
+      "code": "SBAR",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Barters"
+    },
+    {
+      "code": "SBIK",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Bicycles"
+    },
+{
+      "code": "SBIZ",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Businesses"
+    },
+    {
+      "code": "SCOL",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Collections"
+    },
+    {
+      "code": "SEDU",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Educational"
+    },
+    {
+      "code": "SELE",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Electronics & Photo"
+    },
+{
+      "code": "SFNB",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Food & Beverage"
+    },
+    {
+      "code": "SFUR",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Furniture"
+    },
+    {
+      "code": "SGAR",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Garage Sales"
+    },
+    {
+      "code": "SGFT",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Gift Cards"
+    },
+{
+      "code": "SHNB",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Health & Beauty"
+    },
+    {
+      "code": "SHNG",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Home & Garden"
+    },
+    {
+      "code": "SIND",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Industrial"
+    },
+    {
+      "code": "SJWL",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Jewelry"
+    },
+{
+      "code": "SLIT",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Literature"
+    },
+    {
+      "code": "SMNM",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Movies & Music"
+    },
+    {
+      "code": "SMUS",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Musical Instruments"
+    },
+    {
+      "code": "SRES",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Restaurants"
+    },
+{
+      "code": "SSNF",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Sports & Fitness"
+    },
+    {
+      "code": "STIX",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Tickets"
+    },
+    {
+      "code": "STOO",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Tools"
+    },
+    {
+      "code": "STOY",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Toys & Hobbies"
+    },
+{
+      "code": "STVL",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Travel"
+    },
+    {
+      "code": "SWNT",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Wanted"
+    },
+    {
+      "code": "SOTH",
+      "group_code": "SSSS",
+      "group_name": "For Sale",
+      "name": "Other"
+    },

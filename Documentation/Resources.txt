@@ -1,0 +1,29 @@
+Solobuy Hackathon----
+
+Ionic Website - http://ionicframework.com/
+Ionic Crash Course - http://www.youtube.com/watch?v=C-UwOWB9Io4
+Node.JS - http://nodejs.org/
+Java (JDK) - http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+Android SDK - https://developer.android.com/sdk/installing/index.html
+
+
+PopulateDB----
+
+3taps API  - https://3taps.com/
+Mashape - https://www.mashape.com/
+https://bitbucket.org/
+
+
+MVP Details----
+
+Homepage:
+Includes listings within 50 miles (default) of the GPS location.
+Each listing comes with a title, description, price, location info, and contact info with a call button.
+The listings should be sorted by popularity (most views) if possible.
+
+Search:
+Search bar, Category drop down, Radius, Search Button.
+Text that states which cities are included.
+
+
+
