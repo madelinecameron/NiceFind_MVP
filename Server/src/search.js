@@ -9,12 +9,16 @@ var item = new mongoose.Schema({
     price : { type: Number, required: true },
     date_added : { type: Date, required: true },
     category : { type: Number, required: true },
-    coordinates : { type: Array, required: true },
+    lat : { type: Number, required: true },
+    long : { type: Number, required: true },
     owner_id : { type: ObjectId, required: true }
 });
 
-var ItemModel = mongoose.model("Item", item);
+var item_model = mongoose.model("Item", item, "Items");
 
 function searchForItem(lat, long, response) {
-    return 0;
+   return item_model.find({lat: {$gte: 37.9120, $lte: 37.9898}, long: {$gte: -91.8051, $lte: -91.72596}},
+        function(err, item) {
+            console.log("Item ID: %s\nName: %s", item.id, item.name);
+        });
 }

@@ -30,3 +30,4 @@ node_modules
 
 conf/db_conf.json
 Server/conf/db_conf.json
+Server/three_taps_conf
