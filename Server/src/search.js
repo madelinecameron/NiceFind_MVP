@@ -2,8 +2,10 @@
  * Created by Madeline on 11/25/2014.
  */
 
+var mongoose = require("mongoose");
+
 var item = new mongoose.Schema({
-    id : { type: ObjectId, required: true},
+    id : { type: String, required: true},
     name : { type: String, required: true },
     description : { type: String, required: false },
     price : { type: Number, required: true },
@@ -11,14 +13,15 @@ var item = new mongoose.Schema({
     category : { type: Number, required: true },
     lat : { type: Number, required: true },
     long : { type: Number, required: true },
-    owner_id : { type: ObjectId, required: true }
+    owner_id : { type: String, required: true }
 });
 
-var item_model = mongoose.model("Item", item, "Items");
+var item_model = mongoose.model("Item", item, "items");
 
-function searchForItem(lat, long, response) {
-   return item_model.find({lat: {$gte: 37.9120, $lte: 37.9898}, long: {$gte: -91.8051, $lte: -91.72596}},
-        function(err, item) {
-            console.log("Item ID: %s\nName: %s", item.id, item.name);
+module.exports = {
+    searchForItem: function (lat, long, response) {
+        return item_model.find({}, function(err, item) {
+            console.log(item);
         });
+    }
 }

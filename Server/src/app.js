@@ -3,6 +3,7 @@ var root = __dirname,
     path = require("path"),
     mongoose = require("mongoose"),
     db_creds = require("../conf/db_conf.json"),
+    search = require("./search.js");
 
 var app = express();
 
@@ -18,7 +19,7 @@ app.get("/dashboard", function(req, res) {
 });
 
 app.get("/search", function(req, res) {
-    return searchForItem(req.query.lat, req.query.long, res);
+    return search.searchForItem(req.query.lat, req.query.long, res);
 });
 
 app.get("/about", function(req, res) {
