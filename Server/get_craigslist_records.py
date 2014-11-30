@@ -8,13 +8,11 @@ def get_records(api_key):
     
     while(next_page > 0):
         request_url = "http://search.3taps.com/?" + '&'.join("{!s}={!s}".format(key, val) for (key, val) in params.items())
-        print("Request: {0}".format(request_url))
         response = requests.get(request_url)
-        print("Headers: %s" % response.headers)
         
         content_decode = response.content.decode("utf-8")
         json_parse = json.loads(content_decode)
-        print("Json: %s" % json_parse)
+
         external_id_set = set()
         item_list = []
         for item in json_parse["postings"]:

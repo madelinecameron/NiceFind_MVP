@@ -21,6 +21,7 @@ var item_model = mongoose.model("Item", item, "items");
 module.exports = {
     search: function (query, response) {
         return item_model.find(query, function(err, item) {
+            console.log(query);
             if(!err) {
                 return response.send(item);
             }
