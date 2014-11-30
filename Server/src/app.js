@@ -15,11 +15,11 @@ mongoose.connect(("mongodb://%username%:%password%@ds053300.mongolab.com:53300/s
 console.log("Database successfully connected!");
 
 app.get("/dashboard", function(req, res) {
-    res.send("It works!");
+    return search.search({}, res);
 });
 
 app.get("/search", function(req, res) {
-    return search.searchForItem(req.query.lat, req.query.long, res);
+    return search.search(req.query, res);
 });
 
 app.get("/about", function(req, res) {

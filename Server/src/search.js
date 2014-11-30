@@ -19,9 +19,14 @@ var item = new mongoose.Schema({
 var item_model = mongoose.model("Item", item, "items");
 
 module.exports = {
-    searchForItem: function (lat, long, response) {
-        return item_model.find({}, function(err, item) {
-            console.log(item);
+    search: function (query, response) {
+        return item_model.find(query, function(err, item) {
+            if(!err) {
+                return response.send(item);
+            }
+            else {
+                console.log(item);
+            }
         });
-    }
-}
+    },
+};
