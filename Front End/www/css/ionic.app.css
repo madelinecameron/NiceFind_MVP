@@ -20,8 +20,6 @@ $dark:                            #444 !default;
   https://twitter.com/benjsperry  https://twitter.com/ionicframework
   MIT License: https://github.com/driftyco/ionicons
 */
-
-
 @font-face {
   font-family: "Ionicons";
   src: url("../lib/ionic/fonts/ionicons.eot?v=1.5.2");
@@ -2234,8 +2232,7 @@ body.grade-b, body.grade-c {
   margin-top: -1px;
   padding-top: 1px;
   width: auto;
-  height: auto;
-  background-color: #dddddd;  }
+  height: auto; }
 
 .scroll-content-false, .menu .scroll-content.scroll-content-false {
   z-index: 11; }

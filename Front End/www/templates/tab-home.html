@@ -1,23 +1,23 @@
 <ion-view title="Solobuy">
-  <ion-content header-shrink scroll-event-interval="5">
-    <div class="list card">
-
-      <div class="item item-avatar">
-        <img src="../www/img/thumb.jpg">
-          <h2>2013 Victory Highball</h2>
-          <p>$10,000</p>
-      </div>
-
-      <div class="item item-body">
-        <img class="full-image" src="../www/img/full.jpg">
-          <p> 2013 Victory Highball motorcycle. Has less than 4000 miles. Well kept with upgrades that include: victory saddle bags quick release, low handlebars 2014 headlight, professional pinstriping, and buddy seat
-          </p>
-        <button class="button button-full button-calm">
-          <i class="icon ion-android-call"></i>
-            CALL SELLER
-        </button>
-      </div>
-
-    </div>
+  <ion-content ng-controller="HomeCtrl">
+    <div>
+		<div
+			ng-repeat="item in items"
+			ng-item-width="'100%'"
+			ng-item-height="'25px'">
+			
+			<div style="margin-top:0px; height:85px; width:100%">
+				<div style="float: left;">
+					<img src={{item.obj.image_urls[0].full}} style='width:80px; height:80px' />
+				</div>
+				<div id="nameBox" style="width: 50%; margin-top:0px; float:left;">
+					&nbsp;&nbsp;<h1 style="font-size: 15px">{{item.obj.name}}</h1>
+				</div>
+				<div style="margin-left:200px;float:none; margin-top: 0px; height:30px;">
+					<p style="font-size: 12px">{{item.obj.price}}</p>
+				</div>
+			</div>
+		</div>
+	</div>
   </ion-content>
 </ion-view>

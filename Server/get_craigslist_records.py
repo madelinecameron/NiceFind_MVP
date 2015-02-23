@@ -1,13 +1,23 @@
 import sys, os, requests, json
 from pymongo import MongoClient
+from parse_json_v1 import parse_items
+
+global ANCHOR
+ANCHOR = None
 
 def get_records(api_key):
 	next_page = 1
-	params = { 'auth_token' : api_key, 'status' : 'for_sale', 'lat' : 37.956002, 'long' : -91.774363, 'radius' : '50mi', 'category': 'SANT', 'has_image': 1, 
-	'has_price': 1, 'rpp': 100, 'retvals': 'external_id,category,heading,location,body,timestamp,price,images'}
+	params = { 'auth_token' : api_key, 'status' : 'for_sale', 'lat' : 37.956002, 'long' : -91.774363, 'radius' : '100mi', 'category': 'SANT|SCOL|SJWL', 'has_image': 1, 
+	'has_price': 1, 'rpp': 100, 'retvals': 'external_id,category,heading,location,body,timestamp,price,images' }
 	
 	while(next_page > 0):
-		request_url = "http://search.3taps.com/?" + '&'.join("{!s}={!s}".format(key, val) for (key, val) in params.items())
+		request_url = None
+		if ANCHOR is None:
+			request_url = "http://search.3taps.com/?" + '&'.join("{!s}={!s}".format(key, val) for (key, val) in params.items())
+		else:
+			params.update({'anchor': ANCHOR})
+			request_url = "http://polling.3taps.com/poll?" + '&'.join("{!s}={!s}".format(key, val) for (key, val) in params.items())
+			
 		response = requests.get(request_url)
 		
 		content_decode = response.content.decode("utf-8")
@@ -19,18 +29,17 @@ def get_records(api_key):
 			if(item["external_id"] not in external_id_set):
 				geojson_obj = {
 						'type': 'Point',
-						'coordinates': [ float(item["location"]["lat"]), float(item["location"]["long"]) ]
+						'coordinates': [ float(item["location"]["long"]), float(item["location"]["lat"]) ]
 					}
 				external_id_set.add(item["external_id"])
-				item_list.append({ 'name': item["heading"], 'price': item["price"], 'image_urls': item["images"], 'body': item["body"], 'loc': geojson_obj, 'timestamp': item["timestamp"]})
-
-		for item in item_list:
-			print("Item: %s" % item)
+				parsed_json = parse_items({ 'name': item["heading"], 'price': item["price"], 'image_urls': item["images"], 'body': item["body"], 'loc': geojson_obj, 'timestamp': item["timestamp"]})
+				item_list.append(parsed_json)
 			
 		next_page = json_parse['next_page']
-		params = { 'auth_token' : api_key, 'status' : 'for_sale', 'lat' : 37.956002, 'long' : -91.774363, 'radius' : '50mi', 'category': 'SANT', 'has_image': 1, 
+		params = { 'auth_token' : api_key, 'status' : 'for_sale', 'lat' : 37.956002, 'long' : -91.774363, 'radius' : '100mi', 'category': 'SANT', 'has_image': 1, 
 			'has_price': 1, 'rpp': 100, 'retvals': 'external_id,category,heading,location,body,timestamp,price,images', 'page': next_page}
 	
+	ANCHOR = item["anchor"]
 	return item_list
 	
 def put_records_in_db(records, user, password):

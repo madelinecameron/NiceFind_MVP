@@ -17,8 +17,8 @@ var itemSchema = new mongoose.Schema({
     owner_id : { type: String, required: true }
 });
 
-var Item = mongoose.model('item', itemSchema);
-
+itemSchema.index({"loc" : "2d"});
+var Item = mongoose.model('items', itemSchema);
 var server = restify.createServer({name: 'Solobuy_Server' });
 
 server.listen(3000, function() {
@@ -30,30 +30,49 @@ server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
 server.get('/search', function(req, res, next) {
-    var lat = req.params.lat;
-    var long = req.params.long;
-    var query = {
-        loc: {
-            $near: [parseFloat(lat), parseFloat(long)],
-            $maxDistance: 500000000
-        }
+    if(req.params.lat == null || req.params.long == null) {
+        console.log("R");
+        return res.send(400, null); //Bad request
+    }
+    var location = {
+        type: "Point",
+        coordinates: [99.313603256955, -67.531012129345]
     };
-    Item.find(query, function(err, item) {
-        console.log(query);
+    Item.geoNear(location, {maxDistance: 1000, spherical: true }, function(err, results, stats) {
         if(!err) {
-            return res.send(item);
+            console.log("Item: ");
+            console.log(results);
+            return res.send(results);
         }
         else {
-            console.log(item);
+            console.log(err);
         }
     });
 });
 
 server.get('/dashboard', function(req, res, next) {
-
+    console.log("Q");
+    if(req.params.lat == null || req.params.long == null) {
+        console.log("R");
+        return res.send(400, null); //Bad request
+    }
+    var location = {
+        type: "Point",
+        coordinates: [99.313603256955, -67.531012129345]
+    };
+    Item.geoNear(location, {maxDistance: 1000, spherical: true }, function(err, results, stats) {
+        if(!err) {
+            console.log("Item: ");
+            console.log(results);
+            return res.send(results);
+        }
+        else {
+            console.log(err);
+        }
+    });
 });
 
 server.get('/about', function(req, res, next) {
-    res.send("Solobuy was created by Nick Rollins et al");
+    res.send("Solobuy was created by Nick Rollins and Madeline Cameron");
 });
 

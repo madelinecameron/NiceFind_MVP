@@ -1,12 +1,4 @@
 {
-  "name": "Solobuy",
-  "app_id": "",
-  "gulpStartupTasks": [
-    "sass",
-    "watch"
-  ],
-  "watchPatterns": [
-    "www/**/*",
-    "!www/lib/**/*"
-  ]
+  "name": "solobuy",
+  "app_id": ""
 }
