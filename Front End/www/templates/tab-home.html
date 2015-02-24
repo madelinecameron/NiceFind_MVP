@@ -4,19 +4,16 @@
 		<div
 			ng-repeat="item in items"
 			ng-item-width="'100%'"
-			ng-item-height="'25px'">
+			ng-item-height="'10%'"
+			class="list">
 			
-			<div style="margin-top:0px; height:85px; width:100%">
-				<div style="float: left;">
-					<img src={{item.obj.image_urls[0].full}} style='width:80px; height:80px' />
-				</div>
-				<div id="nameBox" style="width: 50%; margin-top:0px; float:left;">
-					&nbsp;&nbsp;<h1 style="font-size: 15px">{{item.obj.name}}</h1>
-				</div>
-				<div style="margin-left:200px;float:none; margin-top: 0px; height:30px;">
-					<p style="font-size: 12px">{{item.obj.price}}</p>
-				</div>
-			</div>
+			<a class="item item-thumbnail-left" href=#/tab/item/{{item.obj._id}}>
+				<img src={{item.obj.image_urls[0].full}} />
+				<h2>{{item.obj.name}}</h2>
+				<p>[Location]</p>
+				<p>${{item.obj.price}}</p>
+			</a>
+			
 		</div>
 	</div>
   </ion-content>
