@@ -22,7 +22,6 @@ def get_records(api_key):
 		content_decode = response.content.decode("utf-8")
 		json_parse = json.loads(content_decode)
 
-		print(json_parse)
 		for item in json_parse["postings"]:
 			if(item["external_id"] not in external_id_set):
 				geojson_obj = {
@@ -58,9 +57,5 @@ if __name__ == "__main__":
 		db_pass = conf.readline().replace("\n", "")
 	
 	records = get_records(api_key)
-	with open('dump.json', 'w+') as dump_file:
-		dump_file.write(json.dumps(records, sort_keys=True,
-                  indent=4, separators=(',', ': ')))
-		sys.exit(0)
 	put_records_in_db(records, db_user, db_pass)
 	
