@@ -1,5 +1,6 @@
 var restify = require('restify'),
     mongoose = require('mongoose'),
+    coords = require('coordinate-systems'),
     db_creds = require('./conf/db_conf.json');
 
 var db = mongoose.connect(("mongodb://%username%:%password%@ds053300.mongolab.com:53300/solobuy".replace("%username%",
@@ -35,18 +36,19 @@ server.get('/search', function(req, res, next) {
         console.log("Bad request from %s, sending code 400!", req.connection.remoteAddress)
         return res.send(400, null); //Bad request
     }
+    var coordinates = coords.cartesian([req.params.lat, req.params.long]).polar(false);
     var location = {
         type: "Point",
-        coordinates: [99.313603256955, -67.531012129345]
+        coordinates: coordinates
     };
-    Item.geoNear(location, {maxDistance: 15000, spherical: true }, function(err, results, stats) {
+    Item.geoNear(location, {maxDistance: req.params.distance, spherical: true }, function(err, results, stats) {
         if(!err) {
-            console.log("Sending all items local to (%f, %f) back to %s", req.params.lat, req.params.long,
+            console.log("Sending all items local to (%s, %s) back to %s", req.params.lat, req.params.long,
                 req.connection.remoteAddress);
             return res.send(results);
         }
         else {
-            console.log("Error occurred: %s, IP: %s, Location: (%f, %f)", err, req.connection.remoteAddress,
+            console.log("Error occurred: %s, IP: %s, Location: (%s, %s)", err, req.connection.remoteAddress,
                 req.params.lat, req.params.long);
         }
     });
@@ -57,20 +59,20 @@ server.get('/dashboard', function(req, res, next) {
         console.log("Bad request from %s, sending code 400!", req.connection.remoteAddress)
         return res.send(400, null); //Bad request
     }
+    var coordinates = coords.cartesian([req.params.lat, req.params.long]).polar(false);
+    console.log(coordinates);
     var location = {
         type: "Point",
-        coordinates: [99.313603256955, -67.531012129345]
+        coordinates: coordinates
     };
-    var query = {
-    }
     Item.geoNear(location, {maxDistance: 15000, spherical: true, includeLocs: true }, function(err, results, stats) {
         if(!err) {
-            console.log("Sending all items local to (%f, %f) back to %s", req.params.lat, req.params.long,
+            console.log("Sending all items local to (%s, %s) back to %s", parseFloat(req.params.lat), parseFloat(req.params.long),
                 req.connection.remoteAddress);
             return res.send(results);
         }
         else {
-            console.log("Error occurred: %s, IP: %s, Location: (%f, %f)", err, req.connection.remoteAddress,
+            console.log("Error occurred: %s, IP: %s, Location: (%s, %s)", err, req.connection.remoteAddress,
                 req.params.lat, req.params.long);
         }
     });

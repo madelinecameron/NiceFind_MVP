@@ -35,3 +35,4 @@ Server/three_taps_conf
 Server_Restify/conf/db_conf.json
 Server/dump.json
 *.pyc
+Front End/platforms/
