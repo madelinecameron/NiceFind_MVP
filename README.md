@@ -3,7 +3,12 @@ Solobuy-MVP
 
 To run server:
   - Install Node
-  - Install Mongoose in /Server (npm install mongoose)
-  - Install Restify in /Server ( npm install restify --save)
+  - 'npm install' in /Server
+  - (Optional) Install nodemon in /Server (npm install nodemon)
+  - Start with 'nodemon app.js'
+
+To run client:
+  - Install Ionic
+  - Start with 'ionic serve'
   
   You only have to do this the first time you fetch it from Git. The .gitignore should ignore these files so they don't get       committed and clutter up the Git.
