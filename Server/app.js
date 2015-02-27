@@ -4,6 +4,7 @@ var restify = require('restify'),
 
 var db = mongoose.connect(("mongodb://%username%:%password%@ds053300.mongolab.com:53300/solobuy".replace("%username%",
     db_creds.db.username).replace("%password%", db_creds.db.password)));  // Pulls username and password from conf file
+console.log("Database connection intiated successfully!");
 
 var itemSchema = new mongoose.Schema({
     id : { type: String, required: true},
@@ -22,7 +23,7 @@ var Item = mongoose.model('items', itemSchema);
 var server = restify.createServer({name: 'Solobuy_Server' });
 
 server.listen(3000, function() {
-    console.log("Solobuy server started!");
+    console.log("Server listening on port 3000");
 });
 
 server.use(restify.fullResponse());
@@ -31,48 +32,54 @@ server.use(restify.bodyParser());
 
 server.get('/search', function(req, res, next) {
     if(req.params.lat == null || req.params.long == null) {
-        console.log("R");
+        console.log("Bad request from %s, sending code 400!", req.connection.remoteAddress)
         return res.send(400, null); //Bad request
     }
     var location = {
         type: "Point",
         coordinates: [99.313603256955, -67.531012129345]
     };
-    Item.geoNear(location, {maxDistance: 1000, spherical: true }, function(err, results, stats) {
+    Item.geoNear(location, {maxDistance: 15000, spherical: true }, function(err, results, stats) {
         if(!err) {
-            console.log("Item: ");
-            console.log(results);
+            console.log("Sending all items local to (%f, %f) back to %s", req.params.lat, req.params.long,
+                req.connection.remoteAddress);
             return res.send(results);
         }
         else {
-            console.log(err);
+            console.log("Error occurred: %s, IP: %s, Location: (%f, %f)", err, req.connection.remoteAddress,
+                req.params.lat, req.params.long);
         }
     });
 });
 
 server.get('/dashboard', function(req, res, next) {
-    console.log("Q");
     if(req.params.lat == null || req.params.long == null) {
-        console.log("R");
+        console.log("Bad request from %s, sending code 400!", req.connection.remoteAddress)
         return res.send(400, null); //Bad request
     }
     var location = {
         type: "Point",
         coordinates: [99.313603256955, -67.531012129345]
     };
-    Item.geoNear(location, {maxDistance: 1000, spherical: true }, function(err, results, stats) {
+    var query = {
+    }
+    Item.geoNear(location, {maxDistance: 15000, spherical: true, includeLocs: true }, function(err, results, stats) {
         if(!err) {
-            console.log("Item: ");
-            console.log(results);
+            console.log("Sending all items local to (%f, %f) back to %s", req.params.lat, req.params.long,
+                req.connection.remoteAddress);
             return res.send(results);
         }
         else {
-            console.log(err);
+            console.log("Error occurred: %s, IP: %s, Location: (%f, %f)", err, req.connection.remoteAddress,
+                req.params.lat, req.params.long);
         }
     });
+});
+
+server.get('/item/:id', function(req, res, next) {
+
 });
 
 server.get('/about', function(req, res, next) {
     res.send("Solobuy was created by Nick Rollins and Madeline Cameron");
 });
-

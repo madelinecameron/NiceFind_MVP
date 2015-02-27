@@ -33,3 +33,5 @@ Server/conf/db_conf.json
 Server/three_taps_conf
 .idea/
 Server_Restify/conf/db_conf.json
+Server/dump.json
+*.pyc
