@@ -36,3 +36,4 @@ Server_Restify/conf/db_conf.json
 Server/dump.json
 *.pyc
 Front End/platforms/
+Server/anchor

@@ -67,8 +67,8 @@ server.get('/dashboard', function(req, res, next) {
     };
     Item.geoNear(location, {maxDistance: 15000, spherical: true }, function(err, results, stats) {
         if(!err) {
-            console.log("Sending all items local to (%s, %s) back to %s", parseFloat(req.params.lat), parseFloat(req.params.long),
-                req.connection.remoteAddress);
+            console.log("Sending all items local to (%s, %s) back to %s", parseFloat(req.params.lat),
+                parseFloat(req.params.long), req.connection.remoteAddress);
             return res.send(results);
         }
         else {
@@ -79,7 +79,18 @@ server.get('/dashboard', function(req, res, next) {
 });
 
 server.get('/item/:id', function(req, res, next) {
-
+    Item.find({_id: req.params.id}, { loc: 0 }, function(err, item) {
+        if(!err) {
+            console.log("Sending item %s back to %s", req.params.id,
+                req.connection.remoteAddress);
+            return res.send(results);
+        }
+        else {
+            console.log("Error occurred: %s, IP: %s, Location: (%s, %s)", err, req.connection.remoteAddress,
+                req.params.lat, req.params.long);
+            return res.send(400, null); //Bad request
+        }
+    });
 });
 
 server.get('/about', function(req, res, next) {

@@ -17,7 +17,7 @@ angular.module('starter.services', [])
   return {
     all: function() {
 		navigator.geolocation.getCurrentPosition(function(position) {
-			$http.get('http://localhost:3000/search?lat=' + position.coord.latitude + '&long=' + position.coords.longitude).
+			$http.get('http://104.236.44.62:3000/search?lat=' + position.coord.latitude + '&long=' + position.coords.longitude).
 				success(function(data, status, headers, config) {
 					console.log(data);
 					return data;

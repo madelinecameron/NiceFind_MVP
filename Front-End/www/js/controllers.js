@@ -12,9 +12,12 @@ angular.module('starter.controllers', [])
 .controller('AccountCtrl', function($scope) {
 })
 
+.controller('ItemDetailCtrl', function($scope, $state, $http, $q) {
+})
+
 .controller('HomeCtrl', function($scope, $state, $http, $q) {
 	navigator.geolocation.getCurrentPosition(function(position) {
-			$http.get('http://localhost:3000/dashboard?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
+			$http.get('http://104.236.44.62:3000/dashboard?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
 				success(function(data, status, headers, config) {
 					console.dir(data);
 					$scope.items = data;
@@ -56,7 +59,7 @@ angular.module('starter.controllers', [])
 //				defer.resolve(res)
 //
 //            })
-//	
+//
 //    .error(function(status, err){
 //      defer.reject(status)
 //    })
@@ -81,5 +84,3 @@ angular.module('starter.controllers', [])
 //  }
 //
 //  $scope.init();
-
-	
