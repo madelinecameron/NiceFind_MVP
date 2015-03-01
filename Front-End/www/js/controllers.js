@@ -16,7 +16,7 @@ angular.module('starter.controllers', [])
 	navigator.geolocation.getCurrentPosition(function(position) {
 			$http.get('http://localhost:3000/dashboard?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
 				success(function(data, status, headers, config) {
-					console.log(data);
+					console.dir(data);
 					$scope.items = data;
 				}).
 				error(function(data, status, headers, config) {

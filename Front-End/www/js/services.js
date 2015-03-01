@@ -19,6 +19,7 @@ angular.module('starter.services', [])
 		navigator.geolocation.getCurrentPosition(function(position) {
 			$http.get('http://localhost:3000/search?lat=' + position.coord.latitude + '&long=' + position.coords.longitude).
 				success(function(data, status, headers, config) {
+					console.log(data);
 					return data;
 				}).
 				error(function(data, status, headers, config) {
