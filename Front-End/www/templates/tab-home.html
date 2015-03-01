@@ -1,23 +1,20 @@
 <ion-view title="Solobuy">
   <ion-content header-shrink scroll-event-interval="5">
-    <div class="list card">
-
-      <div class="item item-avatar">
-        <img src="../www/img/thumb.jpg">
-          <h2>2013 Victory Highball</h2>
-          <p>$10,000</p>
-      </div>
-
-      <div class="item item-body">
-        <img class="full-image" src="../www/img/full.jpg">
-          <p> 2013 Victory Highball motorcycle. Has less than 4000 miles. Well kept with upgrades that include: victory saddle bags quick release, low handlebars 2014 headlight, professional pinstriping, and buddy seat
-          </p>
-        <button class="button button-full button-calm">
-          <i class="icon ion-android-call"></i>
-            CALL SELLER
-        </button>
-      </div>
-
-    </div>
+    <div>
+		<div
+		ng-repeat="item in items"
+		ng-item-width="'100%'"
+		ng-item-height="'10%'"
+		class="list">
+			
+			<a class="item item-thumbnail-left" href=#/tab/item/{{item.obj._id}}>
+				<img src={{item.obj.image_urls[0].full}} />
+				<h2>{{item.obj.name}}</h2>
+				<p>[Location]</p>
+				<p>${{item.obj.price}}</p>
+			</a>
+			
+		</div>
+	</div>
   </ion-content>
 </ion-view>

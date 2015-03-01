@@ -4,7 +4,7 @@
  * Remove plugins from cordovaPlugins array after_plugin_rm
  */
 var fs = require('fs');
-var packageJSON = require('../../package.json');
+var packageJSON = require('../package.json');
 
 packageJSON.cordovaPlugins = packageJSON.cordovaPlugins || [];
 
