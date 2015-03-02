@@ -10,7 +10,7 @@
 		});
 	}
 </script>
-<ion-view title="Solobuy">
+<ion-view title="Rolla, MO + 100 Miles">
   <ion-content header-shrink scroll-event-interval="5">
 		<ion-refresher
 			pulling-text="Pull to refresh..."
@@ -20,15 +20,14 @@
 		ng-repeat="item in items"
 		ng-item-width="'100%'"
 		ng-item-height="'10%'"
-		class=" card list">
+		class="card list">
 
 			<a class="item item-thumbnail-left" href="/#/tab/item/{{item.obj._id}}">
 				<img src={{item.obj.image_urls[0].full}} />
 				<h2>{{item.obj.name}}</h2>
 				<p>{{item.obj.real_loc}}</p>
-				<p>${{item.obj.price}}</p>
+				<h1>${{item.obj.price}}</h1>
 			</a>
-
 		</ion-item>
   </ion-content>
 </ion-view>

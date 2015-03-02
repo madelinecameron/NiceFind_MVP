@@ -4157,11 +4157,15 @@ a.subdued {
   margin: -1px;
   padding: 16px;
   border-width: 1px;
-  border-style: solid;
   font-size: 16px; }
+  .item h1 {
+    margin: 0px;
+    font-size: 28px; 
+    color: #fa6165;}
   .item h2 {
-    margin: 0 0 4px 0;
-    font-size: 16px; }
+    margin: 0 0 2px 0;
+    font-size: 14px;
+    color: #3CB0BD }
   .item h3 {
     margin: 0 0 4px 0;
     font-size: 14px; }
@@ -4173,7 +4177,7 @@ a.subdued {
     font-size: 10px; }
   .item p {
     color: #666;
-    font-size: 14px; }
+    font-size: 13px; }
   .item h1:last-child, .item h2:last-child, .item h3:last-child, .item h4:last-child, .item h5:last-child, .item h6:last-child, .item p:last-child {
     margin-bottom: 0; }
   .item .badge {
@@ -4532,15 +4536,17 @@ a.item-content {
     border-radius: 4px; }
 
 .item-thumbnail-left, .item-thumbnail-left .item-content {
-  padding-left: 106px;
-  min-height: 100px; }
+  padding-left: 150px;
+  padding-right: 0px;
+  min-height: 145px; }
   .item-thumbnail-left > img:first-child, .item-thumbnail-left .item-image, .item-thumbnail-left .item-content > img:first-child, .item-thumbnail-left .item-content .item-image {
     position: absolute;
     top: 10px;
     left: 10px;
-    max-width: 80px;
-    max-height: 80px;
-    width: 100%; }
+    max-width: 130px;
+    max-height: 100px;
+    width: 100%; 
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); }
 
 .item-avatar.item-complex, .item-avatar-left.item-complex, .item-thumbnail-left.item-complex {
   padding-left: 0; }
@@ -4573,7 +4579,7 @@ a.item-content {
   white-space: normal; }
   .item-body h1, .item-body h2, .item-body h3, .item-body h4, .item-body h5, .item-body h6, .item-body p {
     margin-top: 16px;
-    margin-bottom: 16px; }
+    margin-bottom: 16px;}
 
 .item-divider {
   padding-top: 8px;
@@ -4772,7 +4778,7 @@ a.item-content {
 
 .card.list .list-item {
   padding-right: 1px;
-  padding-left: 1px; }
+  padding-left: 1px;}
 
 /**
  * Cards and Inset Lists
@@ -4781,18 +4787,20 @@ a.item-content {
  */
 .card, .list-inset {
   overflow: hidden;
-  margin: 20px 10px;
+  margin: 12px 10px;
   border-radius: 2px;
+  height: 120px; /** May need to remove this **/
   background-color: #fff; }
 
 .card {
   padding-top: 1px;
   padding-bottom: 1px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); }
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
 
 .padding .card, .padding .list-inset {
   margin-left: 0;
-  margin-right: 0; }
+  margin-right: 0;
+  margin-bottom: auto;}
 
 .card .item:first-child, .list-inset .item:first-child, .padding > .list .item:first-child {
   border-top-left-radius: 2px;
