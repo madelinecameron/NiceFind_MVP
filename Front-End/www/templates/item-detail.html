@@ -1,7 +1,17 @@
 <ion-view title="Solobuy">
   <ion-content header-shrink scroll-event-interval="5">
     <div ng-model="item">
-      <p>Name: {{item.name}}</p>
-    </div>
-  </ion-content>
+      <div class="item item-text-wrap">
+        <h2>{{item.name}}</h2>
+          <div class="item item-body">
+            <img class="full-image" src={{item._id}}>
+            <p>{{item.real_loc}}</p>
+            <h1>${{item.price}}</h1>
+            <button class="button button-block button-calm">
+                Call
+            </button>
+          </div>
+        </div>
+      </div>
+    </ion-content>
 </ion-view>
