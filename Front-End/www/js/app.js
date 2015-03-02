@@ -50,4 +50,22 @@ angular.module('solobuy', ['ionic', 'solobuy.controllers', 'solobuy.services'])
         }
       }
     });
+    $stateProvider.state('tab.search', {
+      url: '/search',
+      views: {
+        'search-tab': {
+          templateUrl: 'templates/tab-search.html',
+          controller: 'searchCntrl'
+        }
+      }
+    });
+    $stateProvider.state('tab.account', {
+      url: '/account',
+      views: {
+        'account-tab': {
+          templateUrl: 'templates/tab-account.html',
+          controller: 'accountCntrl'
+        }
+      }
+    });
 });
