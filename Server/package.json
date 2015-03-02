@@ -1,0 +1,13 @@
+{
+  "name": "Solobuy_Server",
+  "version": "0.0.5",
+  "private": true,
+  "scripts": {
+    "start": "node ./app"
+  },
+  "dependencies": {
+    "restify": "~2.8.5",
+	  "mongoose": "~3.8.24",
+	  "coordinate-systems": "~1.1.0"
+  }
+}

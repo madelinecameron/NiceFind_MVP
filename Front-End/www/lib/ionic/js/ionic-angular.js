@@ -7304,7 +7304,7 @@ IonicModule.constant('$ionicNavBarConfig', {
  * @usage
  *
  * ```html
- * <body ng-app="starter">
+ * <body ng-app="solobuy">
  *   <!-- The nav bar that will be updated as we navigate -->
  *   <ion-nav-bar class="bar-positive" animation="nav-title-slide-ios7">
  *   </ion-nav-bar>

@@ -12,21 +12,25 @@
 </script>
 <ion-view title="Solobuy">
   <ion-content header-shrink scroll-event-interval="5">
-    <div>
-		<div
+		<ion-refresher
+			pulling-text="Pull to refresh..."
+			on-refresh="refreshList()">
+		</ion-refresher>
+    <ion-list>
+		<ion-item
 		ng-repeat="item in items"
 		ng-item-width="'100%'"
 		ng-item-height="'10%'"
 		class="list">
-			
-			<a class="item item-thumbnail-left" href=#/tab/item/{{item.obj._id}}>
+
+			<a class="item item-thumbnail-left" href="/#/tab/item/{{item.obj._id}}">
 				<img src={{item.obj.image_urls[0].full}} />
 				<h2>{{item.obj.name}}</h2>
 				<p>{{item.obj.real_loc}}</p>
 				<p>${{item.obj.price}}</p>
 			</a>
-			
-		</div>
-	</div>
+
+		</ion-item>
+	</ion-list>
   </ion-content>
 </ion-view>

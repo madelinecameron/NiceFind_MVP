@@ -1,25 +1,11 @@
 'use strict';
-angular.module('starter.controllers', [])
+angular.module('solobuy.controllers', [])
 
-.controller('SearchCtrl', function($scope, Search) {
-  $scope.friends = Search.all();
-})
-
-.controller('SearchDetailCtrl', function($scope, $stateParams, Search) {
-  $scope.search = Search.get($stateParams.searchId);
-})
-
-.controller('AccountCtrl', function($scope) {
-})
-
-.controller('ItemDetailCtrl', function($scope, $state, $http, $q) {
-})
-
-.controller('HomeCtrl', function($scope, $state, $http, $q) {
+.controller('homeCntrl', function($scope, $state, $http, $q) {
+  console.log("In home");
 	navigator.geolocation.getCurrentPosition(function(position) {
 			$http.get('http://104.236.44.62:3000/dashboard?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
 				success(function(data, status, headers, config) {
-					console.dir(data);
 					$scope.items = data;
 				}).
 				error(function(data, status, headers, config) {
@@ -28,6 +14,18 @@ angular.module('starter.controllers', [])
 					return 0;
 				});
 		});
+})
+.controller('itemCntrl', function($scope, $state, $stateParams, $http, $q) {
+  $http.get('http://104.236.44.62:3000/item/' + $stateParams.id).
+    success(function(data, status, headers, config) {
+      console.dir(data);
+      $scope.item = data[0];
+    }).
+    error(function(data, status, headers, config) {
+      console.log("Failed");
+      console.log("Error:" + status);
+      return 0;
+    });
 });
 
 //$scope.init = function(){

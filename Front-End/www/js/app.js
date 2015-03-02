@@ -1,11 +1,11 @@
-// Ionic Starter App
+// Solobuy Ionic application
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// 'solobuy' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+// 'solobuy.services' is found in services.js
+// 'solobuy.controllers' is found in controllers.js
+angular.module('solobuy', ['ionic', 'solobuy.controllers', 'solobuy.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -20,72 +20,34 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     }
   });
 })
-
-.config(function($stateProvider, $urlRouterProvider) {
-
-  // Ionic uses AngularUI Router which uses the concept of states
-  // Learn more here: https://github.com/angular-ui/ui-router
-  // Set up the various states which the app can be in.
-  // Each state's controller can be found in controllers.js
+.config(function($stateProvider, $urlRouterProvider)  {
   $stateProvider
-    // setup an abstract state for the tabs directive
     .state('tab', {
       url: "/tab",
       abstract: true,
       templateUrl: "templates/tabs.html"
-    })
-
-    // Each tab has its own nav history stack:
-
-    .state('tab.home', {
+    });
+    $stateProvider.state('tab.home', {
       url: '/home',
       views: {
-        'tab-home': {
+        'home-tab': {
           templateUrl: 'templates/tab-home.html',
-          controller: 'HomeCtrl'
+          controller: 'homeCntrl'
         }
       }
     })
-    .state('tab.item-detail', {
+    .state('tab.item', {
       url: '/item/:id',
       views: {
-        'tab-item': {
-          templateUrl: 'templates/item.html',
-          controller: 'ItemDetailCtrl'
-        }
-      }
-    })
-	
-    .state('tab.search', {
-      url: '/search',
-      views: {
-        'tab-search': {
-          templateUrl: 'templates/tab-search.html',
-          controller: 'SearchCtrl'
-        }
-      }
-    })
-    .state('tab.search-detail', {
-      url: '/search/:searchId',
-      views: {
-        'tab-search': {
-          templateUrl: 'templates/search-detail.html',
-          controller: 'SearchDetailCtrl'
-        }
-      }
-    })
-
-    .state('tab.account', {
-      url: '/account',
-      views: {
-        'tab-account': {
-          templateUrl: 'templates/tab-account.html',
-          controller: 'AccountCtrl'
+        'home-tab': {
+          templateUrl: 'templates/item-detail.html',
+          controller: 'itemCntrl',
+          resolve: {
+            id: function($stateParams) {
+              return $stateParams.id
+            }
+          }
         }
       }
     });
-
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/home');
-
 });

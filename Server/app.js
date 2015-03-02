@@ -83,7 +83,7 @@ server.get('/item/:id', function(req, res, next) {
         if(!err) {
             console.log("Sending item %s back to %s", req.params.id,
                 req.connection.remoteAddress);
-            return res.send(results);
+            return res.send(item);
         }
         else {
             console.log("Error occurred: %s, IP: %s, Location: (%s, %s)", err, req.connection.remoteAddress,
