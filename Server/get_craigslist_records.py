@@ -4,12 +4,12 @@ from pymongo import MongoClient
 def get_records(api_key):
     try:
         print "Finding new records..."
-        # anchor = None
-        # if os.path.exists("./anchor"):
-            # print "Reading pre-existing anchor..."
-            # with open("./anchor", 'r+') as anchor_record:
-                # anchor = anchor_record.read()
-                # print "Anchor: {0}".format(anchor)
+        anchor = None
+        if os.path.exists("./anchor"):
+            print "Reading pre-existing anchor..."
+            with open("./anchor", 'r+') as anchor_record:
+                anchor = anchor_record.read()
+                print "Anchor: {0}".format(anchor)
 
         next_page = 1
         params = {'auth_token' : api_key,
@@ -48,17 +48,17 @@ def get_records(api_key):
                         }
                     external_id_set.add(item["external_id"])
 
-                    # geoloc_translate_url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={lat},{long}&key={api_key}".format(
-                                            # lat=item["location"]["lat"], long=item["location"]["long"], api_key="AIzaSyB3wH4frje1bAWg9MW2brZ0s3jwRpGudMo")
-                                            
-                    # location_response = requests.get(geoloc_translate_url)
-                    # loc_decode = location_response.content.decode("utf-8")
-                    # json_loc_parse = json.loads(loc_decode)
+                    geoloc_translate_url = "https://maps.googleapis.com/maps/api/geocode/json?latlng={lat},{long}&key={api_key}".format(
+                                            lat=item["location"]["lat"], long=item["location"]["long"], api_key="AIzaSyB3wH4frje1bAWg9MW2brZ0s3jwRpGudMo")
 
-                    # town = json_loc_parse["results"][0]["address_components"][2]["short_name"]
-                    # state = json_loc_parse["results"][0]["address_components"][5]["short_name"]
+                    location_response = requests.get(geoloc_translate_url)
+                    loc_decode = location_response.content.decode("utf-8")
+                    json_loc_parse = json.loads(loc_decode)
 
-                    #item_list.append({ 'name': item["heading"], 'price': item["price"], 'image_urls': item["images"], 'body': item["body"], 'loc': geojson_obj, 'timestamp': item["timestamp"], 'real_loc': (town + ', ' + state)})
+                    town = json_loc_parse["results"][0]["address_components"][2]["short_name"]
+                    state = json_loc_parse["results"][0]["address_components"][5]["short_name"]
+
+                    item_list.append({ 'name': item["heading"], 'price': "{0:.2f}".format(item["price"]), 'image_urls': item["images"], 'body': item["body"], 'loc': geojson_obj, 'timestamp': item["timestamp"], 'real_loc': (town + ', ' + state)})
 
             next_page = json_parse['next_page']
         params = {'auth_token' : api_key,
@@ -72,9 +72,9 @@ def get_records(api_key):
                   'retvals': 'external_id,category,heading,location,body,timestamp,price,images,external_url'
 				  'page':next_page}
 
-        # with open("./anchor", 'w+') as anchor_record:
-            # print "Anchor write: {0}".format(json_parse["anchor"])
-            # anchor_record.write(str(json_parse["anchor"]))
+        with open("./anchor", 'w+') as anchor_record:
+            print "Anchor write: {0}".format(json_parse["anchor"])
+            anchor_record.write(str(json_parse["anchor"]))
 
         return item_list
 
@@ -99,4 +99,3 @@ if __name__ == "__main__":
 
     records = get_records(api_key)
     put_records_in_db(records, db_user, db_pass)
-

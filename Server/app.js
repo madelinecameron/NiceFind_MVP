@@ -65,7 +65,7 @@ server.get('/dashboard', function(req, res, next) {
         type: "Point",
         coordinates: coordinates
     };
-    Item.geoNear(location, {maxDistance: 15000, spherical: true }, function(err, results, stats) {
+    Item.geoNear(location, {maxDistance: 15000, spherical: true}, function(err, results, stats) {
         if(!err) {
             console.log("Sending all items local to (%s, %s) back to %s", parseFloat(req.params.lat),
                 parseFloat(req.params.long), req.connection.remoteAddress);

@@ -5,6 +5,7 @@ angular.module('solobuy.controllers', [])
 	navigator.geolocation.getCurrentPosition(function(position) {
 			$http.get('http://104.236.44.62:3000/dashboard?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
 				success(function(data, status, headers, config) {
+          console.dir(data);
 					$scope.items = data;
 				}).
 				error(function(data, status, headers, config) {
