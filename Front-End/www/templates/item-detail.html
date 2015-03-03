@@ -2,16 +2,31 @@
   <ion-content header-shrink scroll-event-interval="5">
     <div ng-model="item">
       <div class="item item-text-wrap">
-        <h2>{{item.name}}</h2>
-          <div class="item item-body">
-            <img class="full-image" src={{item._id}}>
-            <p>{{item.real_loc}}</p>
+        <h1 style="color:#3CB0BD">{{item.name}}</h1>
+          <div class="item item-body" ng-item-width="'100%'"
+		ng-item-height="'10%'"> 
+            <img class= "full-image" src={{item.image_urls[0].full}}>
             <h1>${{item.price}}</h1>
-            <button class="button button-block button-calm">
-                Call
-            </button>
+            <h3>Located in {{item.real_loc}}</h3>
+            <p>{{item.body}}</p>
+            <button class="button icon-left ion-ios-telephone button-block button-calm">Call</button>
+            <img class= "full-image" src={{item.image_urls[1].full}}><br/><br/>
+            <img class= "full-image" src={{item.image_urls[2].full}}><br/><br/>
+            <img class= "full-image" src={{item.image_urls[3].full}}>
           </div>
         </div>
       </div>
     </ion-content>
 </ion-view>
+
+<slide-box show-pager="true" does-continue="true" slide-interval="5000" disable-scroll="false">
+        <slide>
+            <img src="http://1.bp.blogspot.com/-kXS3MLcpTPw/T4rZBW2p8DI/AAAAAAAABqI/tR5aiO4Cj58/s1600/cows2.jpg">
+        </slide>
+        <slide>
+            <img src="http://i677.photobucket.com/albums/vv137/smileytrucker/cow-toy-car-stuck-head-1259518194w.jpg">
+        </slide>
+        <slide>
+            <img src="http://farm6.staticflickr.com/5226/5663664227_ba5e573930_z.jpg">
+        </slide>
+    </slide-box>
