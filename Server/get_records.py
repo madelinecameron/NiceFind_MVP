@@ -5,6 +5,7 @@ import sys
 import os
 import requests
 import json
+import time
 
 from pymongo import MongoClient
 
@@ -100,7 +101,7 @@ def pull_records():
         with open("./anchor", 'w+') as anchor_record:
             print "Anchor write: {0}".format(response_json["anchor"])
             anchor_record.write(str(response_json["anchor"]))
-
+    
         return items
     except Exception as e:
         print "Exception: {0}".format(e)
@@ -115,6 +116,9 @@ def put_records_in_db(records):
         print "Inserted: {0}".format(inserted_item)
 
 if __name__ == "__main__":
-    records = pull_records()
-    print "Exporting all records to database..."
-    put_records_in_db(records)
+    while True:
+        records = pull_records()
+        print "Exporting all records to database..."
+        put_records_in_db(records)
+        print "Sleeping for 15 minutes..."
+        time.sleep(900)
