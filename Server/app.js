@@ -41,7 +41,14 @@ server.get('/search', function(req, res, next) {
         type: "Point",
         coordinates: coordinates
     };
-    Item.geoNear(location, {maxDistance: req.params.distance, spherical: true }, function(err, results, stats) {
+    var options = {
+        near: coordinates,
+        maxDistance: req.params.dist != null ? req.params.dist : 160934, //Default: 100 miles
+        spherical: true,
+        limit: 50,
+        skip: req.params.page != null ? (req.params.page * 50) : 0
+    };
+    Item.geoSearch({}, options, function(err, results, stats) {
         if(!err) {
             console.log("Sending all items local to (%s, %s) back to %s", req.params.lat, req.params.long,
                 req.connection.remoteAddress);
@@ -55,7 +62,7 @@ server.get('/search', function(req, res, next) {
 });
 
 server.get('/dashboard', function(req, res, next) {
-    if(req.params.lat == null || req.params.long == null) {
+    if(req.params.lat == null || req.params.long == null || req.params.dist == null) {
         console.log("Bad request from %s, sending code 400!", req.connection.remoteAddress)
         return res.send(400, null); //Bad request
     }
@@ -65,7 +72,14 @@ server.get('/dashboard', function(req, res, next) {
         type: "Point",
         coordinates: coordinates
     };
-    Item.geoNear(location, {maxDistance: 15000, spherical: true}, function(err, results, stats) {
+    var options = {
+        near: coordinates,
+        maxDistance: req.params.dist != null ? req.params.dist : 160934, //Default: 100 miles
+        spherical: true,
+        limit: 50,
+        skip: req.params.page != null ? (req.params.page * 50) : 0
+    };
+    Item.geoSearch({}, options, function(err, results, stats) {
         if(!err) {
             console.log("Sending all items local to (%s, %s) back to %s", parseFloat(req.params.lat),
                 parseFloat(req.params.long), req.connection.remoteAddress);
