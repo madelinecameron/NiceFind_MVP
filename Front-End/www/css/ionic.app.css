@@ -20,8 +20,14 @@ $dark:                            #444 !default;
   https://twitter.com/benjsperry  https://twitter.com/ionicframework
   MIT License: https://github.com/driftyco/ionicons
 */
+.slider {
+    height: 50%;
+    text-align: center;
+}
 
-
+.scroll {
+    height: 100%;
+}
 @font-face {
   font-family: "Ionicons";
   src: url("../lib/ionic/fonts/ionicons.eot?v=1.5.2");

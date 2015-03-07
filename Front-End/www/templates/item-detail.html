@@ -4,15 +4,18 @@
       <div class="item item-text-wrap">
         <div class="item item-body"> 
             <h1 style="color:#3CB0BD">{{item.name}}</h1>
-    <img class= "full-image" src={{item.image_urls[0].full}} on-swipe-right="onSwipeRight()"">
+    <!--<img class= "full-image" src={{item.image_urls}}>-->
+            <ion-slide-box>
+                <ion-slide>
+                    <img class= "full-image" src={{item.image_urls}}>
+                </ion-slide>
+                <ion-slide>
+                    <img class= "full-image" src={{item.image_urls}}>
+                </ion-slide>
+            </ion-slide-box>
             <h1>${{item.price}}</h1>
             <h3>Located in {{item.real_loc}}</h3>
-            <p>{{item.body}}</p>
-            <!--
-            <img class= "full-image" src={{item.image_urls[1].full}}><br/><br/>
-            <img class= "full-image" src={{item.image_urls[2].full}}><br/><br/>
-            <img class= "full-image" src={{item.image_urls[3].full}}>
-            -->
+            <p>{{item.description}}</p>
             <button class="button icon-left ion-navigate button-block button-stable">Directions</button>
             <button class="button icon-left ion-ios7-telephone button-block button-balanced">Call Seller</button>
           </div>
