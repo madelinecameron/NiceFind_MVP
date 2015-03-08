@@ -1,12 +1,14 @@
 <script>
 	function
 </script>
-<ion-view title="Rolla, MO + 100 Mi">
+<ion-view title="Rolla + 100 Miles">
   <ion-content header-shrink scroll-event-interval="5">
 		<ion-refresher
 			pulling-text="Pull to refresh..."
 			on-refresh="refreshList()">
 		</ion-refresher>
+      <slide-box>
+          <ion-slide>
         <ion-item
 		ng-repeat="item in items"
 		ng-item-width="'100%'"
@@ -14,11 +16,13 @@
 		class="card list">
 
 			<a class="item item-thumbnail-left" href="/#/tab/item/{{item.obj._id}}">
-				<img src={{item.obj.image_urls}} />
+				<img src={{item.image_urls[0]}} />
 				<h2>{{item.obj.name}}</h2>
 				<p>{{item.obj.real_loc}}</p>
 				<h1>${{item.obj.price}}</h1>
 			</a>
 		</ion-item>
+        </ion-slide>
+        </slide-box>
   </ion-content>
 </ion-view>
