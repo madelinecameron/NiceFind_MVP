@@ -120,5 +120,5 @@ if __name__ == "__main__":
         records = pull_records()
         print "Exporting all records to database..."
         put_records_in_db(records)
-        print "Sleeping for 15 minutes..."
-        time.sleep(900)
+        print "Sleeping for 5 minutes..."
+        time.sleep(300)

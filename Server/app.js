@@ -27,11 +27,13 @@ var userSchema = new mongoose.Schema({
 
 var townSchema = new mongoose.Schema({
     name : { type: String, required: true },
-    fence: { type: [], required: true, index: '2dsphere' }
+    location: { type: [], required: true, index: '2dsphere' },
+    county_name : { type: String, required: true },
+    state_abbr : { type: String, required: true },
 });
 
 itemSchema.index({"loc" : "2dsphere"});
-townSchema.index({"fence" : "2dsphere"});
+townSchema.index({"location" : "2dsphere"});
 
 var Item = mongoose.model('items', itemSchema);
 var User = mongoose.model('user', userSchema);
@@ -131,6 +133,28 @@ server.get('/town', function(req, res, next) {
         console.log("Request from %s, bad parameters, sending code 400!", req.connection.remoteAddress)
         return res.send(400, null); //Bad request
     }
+
+    var location = {
+        type: "Point",
+        coordinates:[parseFloat(req.params.long), parseFloat(req.params.lat)]
+    };
+    //Distance takes in miles then converts to radians
+    var distance = 0.0063;  //25 miles. Arbitrary.
+    var options = {
+        maxDistance: distance,
+        spherical: true
+    };
+    Town.geoNear(location, options, function(err, results, stats) {
+        if(!err) {
+            console.log("Sending nearest town to (%s, %s) back to %s", parseFloat(req.params.lat),
+                parseFloat(req.params.long), req.connection.remoteAddress);
+            return res.send(results[0]);
+        }
+        else {
+            console.log("Error occurred: %s, IP: %s, Location: (%s, %s)", err, req.connection.remoteAddress,
+                req.params.lat, req.params.long);
+        }
+    });
 });
 
 server.get('/about', function(req, res, next) {
