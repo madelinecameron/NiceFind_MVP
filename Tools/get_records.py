@@ -86,9 +86,9 @@ def pull_records():
                         item_insert = {
                             'name' : item['heading'],
                             'category' : item['category'],
-                            'price' : "{0:.2f}".format(float(item['price'])),
+                            'price' : float("{0:.2f}".format(item['price'])),
                             'currency' : item['currency'],
-                            'image_urls': item['images'][0]['full'],
+                            'image_urls': item['images'],
                             'description' : item['body'],
                             'loc' : geojson_obj,
                             'real_loc' : real_loc,
@@ -101,7 +101,7 @@ def pull_records():
         with open("./anchor", 'w+') as anchor_record:
             print "Anchor write: {0}".format(response_json["anchor"])
             anchor_record.write(str(response_json["anchor"]))
-    
+
         return items
     except Exception as e:
         print "Exception: {0}".format(e)

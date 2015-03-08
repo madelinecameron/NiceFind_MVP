@@ -27,11 +27,11 @@ var userSchema = new mongoose.Schema({
 
 var townSchema = new mongoose.Schema({
     name : { type: String, required: true },
-    fence: { type: [], required: true }
+    fence: { type: [], required: true, index: '2dsphere' }
 });
 
 itemSchema.index({"loc" : "2dsphere"});
-//townSchema.index({"fence" : "2dsphere"});
+townSchema.index({"fence" : "2dsphere"});
 
 var Item = mongoose.model('items', itemSchema);
 var User = mongoose.model('user', userSchema);
