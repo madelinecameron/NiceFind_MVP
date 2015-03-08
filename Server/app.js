@@ -5,7 +5,7 @@ var restify = require('restify'),
 
 var db = mongoose.connect(("mongodb://%username%:%password%@ds053300.mongolab.com:53300/solobuy".replace("%username%",
     db_creds.db.username).replace("%password%", db_creds.db.password)));  // Pulls username and password from conf file
-console.log("Database connection intiated successfully!");
+console.log("Database connection initiated successfully!");
 
 var itemSchema = new mongoose.Schema({
     name : { type: String, required: true },
@@ -13,7 +13,7 @@ var itemSchema = new mongoose.Schema({
     price : { type: Number, required: true },
     date_added : { type: Date, required: true },
     category : { type: Number, required: true },
-    loc: { type: [Number], index: '2dsphere', required: true }, //https://github.com/LearnBoost/mongoose/wiki/3.6-
+    loc: { type: [Number], required: true, index: '2dsphere' }, //https://github.com/LearnBoost/mongoose/wiki/3.6-
                                                                 // Release-Notes#geojson-support-mongodb--24
     owner_id : { type: String, required: true }
 });
@@ -25,15 +25,23 @@ var userSchema = new mongoose.Schema({
     likesList : [{ type: String }]
 });
 
-itemSchema.index({"loc" : "2d"});
+var townSchema = new mongoose.Schema({
+    name : { type: String, required: true },
+    fence: { type: [], required: true }
+});
+
+itemSchema.index({"loc" : "2dsphere"});
+//townSchema.index({"fence" : "2dsphere"});
 
 var Item = mongoose.model('items', itemSchema);
-var User = mongoose.model('usesr', userSchema);
+var User = mongoose.model('user', userSchema);
+var Town = mongoose.model('town', townSchema);
 
 var server = restify.createServer({name: 'Solobuy_Server' });
 
-server.listen(3000, function() {
-    console.log("Server listening on port 3000");
+var port = process.argv[2] != null ? process.argv[2] : 3000; //If parameter exists, use as port, if not port 300
+server.listen(port, function() {
+    console.log("Server listening on port %d", port);
 });
 
 server.use(restify.fullResponse());
@@ -41,27 +49,33 @@ server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
 server.get('/search', function(req, res, next) {
-    if(req.params.lat == null || req.params.long == null || req.params.dist == null || req.params.anchor == null) {
-        console.log("Bad request from %s, sending code 400!", req.connection.remoteAddress)
+
+    if(req.params.lat == null || req.params.long == null) {  //If the 'long' or 'lat' parameter is missing, return 400
+        console.log("Request from %s, missing parameters, sending code 400!", req.connection.remoteAddress)
         return res.send(400, null); //Bad request
     }
-    var coordinates = coords.cartesian([req.params.lat, req.params.long]).polar(false);
+    if(parseFloat(req.params.lat) == null || parseFloat(req.params.long) == null) { //If they don't float (heh), return 400
+        console.log("Request from %s, bad parameters, sending code 400!", req.connection.remoteAddress)
+        return res.send(400, null); //Bad request
+    }
+
     var location = {
         type: "Point",
-        coordinates: coordinates
+        coordinates:[parseFloat(req.params.long), parseFloat(req.params.lat)]
     };
+    //Distance takes in miles then converts to radians
+    var distance = (req.params.dist != null ? parseFloat(req.params.dist) : 100) / 3959;
     var options = {
-        near: coordinates,
-        maxDistance: req.params.dist != null ? req.params.dist : 160934, //Default: 100 miles
+        maxDistance: distance,
         spherical: true,
-        limit: 50,
-        skip: req.params.page != null ? (req.params.page * 50) : 0
+        query: (req.params.query != null ? req.params.query : {}) //If query parameter exists, add, if not {}
     };
-    var params = req.params.parameters != null ? req.params.parameters : {};
-    Item.geoSearch(params, options, function(err, results, stats) {
+    Item.geoNear(location, options, function(err, results, stats) {
         if(!err) {
-            console.log("Sending all items local to (%s, %s) back to %s", req.params.lat, req.params.long,
-                req.connection.remoteAddress);
+            console.log("Sending all items within %s miles of (%s, %s) back to %s", (req.params.dist != null ?
+                    parseFloat(req.params.dist) : 100),
+                parseFloat(req.params.lat),
+                parseFloat(req.params.long), req.connection.remoteAddress);
             return res.send(results);
         }
         else {
@@ -76,6 +90,7 @@ server.get('/item/:id', function(req, res, next) {
         if(!err) {
             console.log("Sending item %s back to %s", req.params.id,
                 req.connection.remoteAddress);
+
             return res.send(item);
         }
         else {
@@ -84,10 +99,6 @@ server.get('/item/:id', function(req, res, next) {
             return res.send(400, null); //Bad request
         }
     });
-});
-
-server.get('/about', function(req, res, next) {
-    res.send("Solobuy was created by Nick Rollins and Madeline Cameron");
 });
 
 server.get('/likes/get/:id', function(req, res, next) {
@@ -100,6 +111,28 @@ server.get('/likes/get/:id', function(req, res, next) {
     });
 });
 
-server.put('/likes/add/:id', function(req, res, next) {
+server.put('/likes/add/:itemId', function(req, res, next) {
+    User.findByIdAndUpdate(
+        req.params.userId,
+        {$push: {likesList: req.params.itemId}}, //Pushes itemId onto likesList
+        {safe: true, upsert: true},
+        function (err, model) {
+            console.log(err);
+        }
+    );
+});
 
+server.get('/town', function(req, res, next) {
+    if(req.params.lat == null || req.params.long == null) {  //If the 'long' or 'lat' parameter is missing, return 400
+        console.log("Request from %s, missing parameters, sending code 400!", req.connection.remoteAddress)
+        return res.send(400, null); //Bad request
+    }
+    if(parseFloat(req.params.lat) == null || parseFloat(req.params.long) == null) { //If they don't float (heh), return 400
+        console.log("Request from %s, bad parameters, sending code 400!", req.connection.remoteAddress)
+        return res.send(400, null); //Bad request
+    }
+});
+
+server.get('/about', function(req, res, next) {
+    res.send("Solobuy was created by Nick Rollins and Madeline Cameron"); //Narcissism!
 });
