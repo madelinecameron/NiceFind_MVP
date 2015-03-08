@@ -16,7 +16,7 @@
             <h3>Located in {{item.real_loc}}</h3>
             <p>{{item.description}}</p>
             <button class="button icon-left ion-navigate button-block button-stable">Directions</button>
-            <button class="button icon-left ion-ios7-telephone button-block button-balanced">Call Seller</button>
+            <button class="button icon-left ion-ios7-telephone button-block button-balanced" ng-click="CallTel ({{item.phone}})">Call Seller</button>
         </div>
       </div>      
     </ion-content>

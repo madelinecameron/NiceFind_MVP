@@ -31,7 +31,11 @@ angular.module('solobuy.controllers', [])
 })
 .controller('accountCntrl', function($scope, $state, $q) {
   console.log("I don't do anything! :D")
-});
+})
+
+$scope.CallTel = function(tel) {
+            window.location.href = 'tel:'+ tel;
+};
 
 //$scope.init = function(){
 //    $scope.page = 1;
