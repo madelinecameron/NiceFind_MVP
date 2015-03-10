@@ -68,4 +68,6 @@ angular.module('solobuy', ['ionic', 'solobuy.controllers', 'solobuy.services'])
         }
       }
     });
+
+    $urlRouterProvider.otherwise("/tab/home");
 });
