@@ -18,9 +18,11 @@
           </label>
           <div class="item range range-positive">
             10 Miles
-            <input type="range" name="radius" min="10" max="500" value="250">
+            <input type="range" name="radius" min="10" max="500" value="250"
+              ng-model="geo.distance"
+              ng-value=250>
             500 Miles
-          </div>
+          </div><p>{{distance}} miles
           <div class="item item-body">
             <p>
               <i><b>Includes: </b>San Mateo, San Leandro, Oakland, Berekely, Palo Alto, Richmond, Mountain View, San Rafael, Novato, and Napa.</i>

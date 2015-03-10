@@ -41,9 +41,9 @@ var Town = mongoose.model('town', townSchema);
 
 var server = restify.createServer({name: 'Solobuy_Server' });
 
-var port = process.argv[2] != null ? process.argv[2] : 3000; //If parameter exists, use as port, if not port 300
-server.listen(port, function() {
-    console.log("Server listening on port %d", port);
+//var port = process.argv[2] != null ? process.argv[2] : 3000; //If parameter exists, use as port, if not port 300
+server.listen(3000, function() {
+    console.log("Server listening on port %d", 3000);
 });
 
 server.use(restify.fullResponse());
