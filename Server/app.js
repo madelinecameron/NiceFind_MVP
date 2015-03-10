@@ -66,16 +66,19 @@ server.get('/search', function(req, res, next) {
         coordinates:[parseFloat(req.params.long), parseFloat(req.params.lat)]
     };
     //Distance takes in miles then converts to radians
-    var distance = (req.params.dist != null ? parseFloat(req.params.dist) : 100) / 3959;
+    var maxDist = (req.params.maxDist != null ? parseFloat(req.params.maxDist) : 100) / 3959;
+    var minDist = (req.params.minDist != null ? parseFloat(req.params.minDist) : 0);
     var options = {
-        maxDistance: distance,
+        minDistance: minDist,
+        maxDistance: maxDist,
+        limit: 100,
         spherical: true,
         query: (req.params.query != null ? req.params.query : {}) //If query parameter exists, add, if not {}
     };
     Item.geoNear(location, options, function(err, results, stats) {
         if(!err) {
             console.log("Sending all items within %s miles of (%s, %s) back to %s", (req.params.dist != null ?
-                    parseFloat(req.params.dist) : 100),
+                    parseFloat(req.params.maxDist) : 100),
                 parseFloat(req.params.lat),
                 parseFloat(req.params.long), req.connection.remoteAddress);
             return res.send(results);

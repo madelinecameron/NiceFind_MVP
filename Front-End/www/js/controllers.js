@@ -1,7 +1,9 @@
 'use strict';
 angular.module('solobuy.controllers', [])
 .controller('homeCntrl', function($scope, $state, $http, $q) {
-	var lastUpdate  = 0;
+	var lastUpdate = 0;
+	var farestDist = 0;  //Farest distance seen so far
+
 	console.log("Trying to update (1)...");
 	if(lastUpdate < new Date().getTime()) {  //Hack-ish caching! Woo!
 		navigator.geolocation.getCurrentPosition(function(position) {
@@ -10,6 +12,11 @@ angular.module('solobuy.controllers', [])
 			console.log(lastUpdate);
 			$http.get('http://104.236.44.62:3000/search?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
 				success(function(data, status, headers, config) {
+					angular.forEach(data, function(value, key) {
+							//If value is greater than farest dist, assign value else re-assign farestDist
+							farestDist = (value.dis > farestDist ? value.dis : farestDist);
+					});
+					console.log(farestDist);
 					$scope.items = data;
 				}).
 				error(function(data, status, headers, config) {
@@ -75,6 +82,32 @@ angular.module('solobuy.controllers', [])
 					return false;
 				}
 		};
+
+		$scope.loadMoreList = function() {
+			navigator.geolocation.getCurrentPosition(function(position) {
+				$http.get('http://104.236.44.62:3000/search?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&minDist=' + farestDist).
+					success(function(data, status, headers, config) {
+						//Don't try to be clever here. forEach makes this go *crazy*...
+						for(var i = 0; i < 100; i++) {
+							$scope.items.push(data[i]);
+						}
+						$scope.$broadcast('scroll.infiniteScrollComplete');
+						return true;
+					}).
+					error(function(data, status, headers, config) {
+						console.log("Failed");
+						console.dir(config);
+						console.log("Error:" + status);
+						$scope.$broadcast('scroll.infiniteScrollComplete');
+						$scope.$apply();
+						return 0;
+					});
+				});
+		}
+
+		$scope.likeItem = function() {
+			console.log("I LIKE THIS!");
+		}
 })
 .controller('itemCntrl', function($scope, $state, $stateParams, $http, $q) {
   $http.get('http://104.236.44.62:3000/item/' + $stateParams.id).
