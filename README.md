@@ -1,4 +1,4 @@
-Solobuy-MVP
+NiceFind-MVP
 ===========
 
 To run server:
