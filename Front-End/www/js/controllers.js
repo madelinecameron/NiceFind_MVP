@@ -26,7 +26,7 @@ angular.module('solobuy.controllers', [])
 					return 0;
 				});
 
-				$http.get('http://104.236.44.62:3000/town?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
+				$http.get('http://104.236.44.62:3000/town?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&nearest=1').
 					success(function(data, status, headers, config) {
 						$scope.town = data.obj.name;
 						$scope.radius = 100;
@@ -62,7 +62,7 @@ angular.module('solobuy.controllers', [])
 							return 0;
 						});
 
-						$http.get('http://104.236.44.62:3000/town?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
+						$http.get('http://104.236.44.62:3000/town?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&nearest=1').
 							success(function(data, status, headers, config) {
 								$scope.town = data.obj.name;
 								$scope.radius = 100;
@@ -123,19 +123,46 @@ angular.module('solobuy.controllers', [])
 })
 .controller('searchCntrl', function($scope, $state, $http, $q) {
 	navigator.geolocation.getCurrentPosition(function(position) {
-		var nearbyTowns;
+		var nearbyTowns = [];
+		var townText;
 		$http.get('http://104.236.44.62:3000/town?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&dist=100').
 			success(function(data, status, headers, config) {
-				console.dir(data);
-				nearbyTowns = data.slice(0, 5);
+				data.forEach(function(town) {
+					nearbyTowns.push(town.obj.name)
+				})
 			}).
 			error(function(data, status, headers, config) {
 				console.log("Failed");
 				console.dir(config);
 				console.log("Error:" + status);
 			});
-  		$scope.geo = { distance: 300, nearbyTowns: nearbyTowns }
+  		$scope.geo = { distance: 100, nearbyTowns: nearbyTowns }
 	});
+	$scope.dragSlider = function() {
+		if($scope.geo.distance % 100 === 0) {
+			var lastUpdate = 0;
+			if(lastUpdate < new Date().getTime()) {  //Hack-ish caching! Woo!
+				// navigator.geolocation.getCurrentPosition(function(position) {
+				// 	lastUpdate = new Date(new Date().getTime() + 3000);  //2 seconds
+				// 	var nearbyTowns = [];
+				// 	console.log($scope.geo.distance);
+				// 	$http.get('http://104.236.44.62:3000/town?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&dist=' + $scope.geo.distance).
+				// 		success(function(data, status, headers, config) {
+				// 			data.forEach(function(town) {
+				// 				console.log(town.obj.name);
+				// 				nearbyTowns.push(town.obj.name)
+				// 			})
+				// 		}).
+				// 		error(function(data, status, headers, config) {
+				// 			console.log("Failed");
+				// 			console.dir(config);
+				// 			console.log("Error:" + status);
+				// 		});
+			  // 		$scope.geo.nearbyTowns = nearbyTowns;
+				// });
+			}
+		}
+	}
 })
 .controller('accountCntrl', function($scope, $state, $q) {
   console.log("I don't do anything! :D")
@@ -153,9 +180,6 @@ angular.module('solobuy.controllers', [])
 	$scope.register = function() {
 		$state.go('register');
 	}
-})
-.controller('splishSplash', function($scope, $state, $q) {
-	console.log("Splish, splash");
 });
 
 //$scope.CallTel = function(tel) {

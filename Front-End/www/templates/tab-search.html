@@ -17,15 +17,15 @@
             </select>
           </label>
           <div class="item range range-positive">
-            10 Miles
-            <input type="range" name="radius" min="10" max="500" value="250"
+            <input type="range" name="radius" id="radius" min="10" max="500" value="100"
               ng-model="geo.distance"
-              ng-value=250>
-            500 Miles
-          </div><p>{{distance}} miles
+              ng-value=100
+              on-drag="dragSlider()">
+          {{geo.distance}} Miles
+          </div><p>
           <div class="item item-body">
             <p>
-              <i><b>Includes: </b>San Mateo, San Leandro, Oakland, Berekely, Palo Alto, Richmond, Mountain View, San Rafael, Novato, and Napa.</i>
+              <i><b>Includes: </b><a ng-repeat="town in geo.nearbyTowns">{{town}}{{$last ? '' : ', '}}</a></i>
             </p>
             <button class="button button-full button-calm">
               <i class="icon ion-checkmark"></i>

@@ -152,7 +152,12 @@ server.get('/town', function(req, res, next) {
         if(!err) {
             console.log("Sending nearest town to (%s, %s) back to %s", parseFloat(req.params.lat),
                 parseFloat(req.params.long), req.connection.remoteAddress);
-            return res.send(results[0]);
+            if(req.params.nearest != null) {
+                return res.send(results[0]);
+            }
+            else {
+                return res.send(results);
+            }
         }
         else {
             console.log("Error occurred: %s, IP: %s, Location: (%s, %s)", err, req.connection.remoteAddress,

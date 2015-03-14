@@ -21,12 +21,6 @@ angular.module('solobuy', ['ionic', 'solobuy.controllers', 'solobuy.services'])
   });
 })
 .config(function($stateProvider, $urlRouterProvider)  {
-  $stateProvider
-    .state('splash', {
-      url: "/",
-      templateUrl: "templates/splash.html",
-      controller: 'splishSplash'
-    });
   $stateProvider.state('register', {
       url: '/register',
       templateUrl: 'templates/register.html',
