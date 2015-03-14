@@ -140,6 +140,23 @@ angular.module('solobuy.controllers', [])
 .controller('accountCntrl', function($scope, $state, $q) {
   console.log("I don't do anything! :D")
 })
+.controller('loginCntrl', function($scope, $state, $q) {
+	$scope.login = function() {
+		console.log($scope.loginForm.username);
+	}
+
+	$scope.register = function() {
+		$state.go('register');
+	}
+})
+.controller('registerCntrl', function($scope, $state, $q) {
+	$scope.register = function() {
+		$state.go('register');
+	}
+})
+.controller('splishSplash', function($scope, $state, $q) {
+	console.log("Splish, splash");
+});
 
 //$scope.CallTel = function(tel) {
 //            window.location.href = 'tel:'+ tel;
