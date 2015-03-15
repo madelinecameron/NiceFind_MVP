@@ -7,9 +7,10 @@
     "test": "mocha"
   },
   "dependencies": {
-    "restify": "~2.8.5",
+    "coordinate-systems": "~1.1.0",
+    "lodash": "^3.5.0",
     "mongoose": "~3.8.24",
-    "coordinate-systems": "~1.1.0"
+    "restify": "~2.8.5"
   },
   "devDependencies": {
     "mocha": "^2.2.0",

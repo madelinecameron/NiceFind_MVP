@@ -173,7 +173,7 @@ angular.module('solobuy.controllers', [])
 	}
 
 	$scope.register = function() {
-		$state.go('register');
+		$state.go('register'); //Redirect to register state
 	}
 })
 .controller('registerCntrl', function($scope, $state, $q) {
