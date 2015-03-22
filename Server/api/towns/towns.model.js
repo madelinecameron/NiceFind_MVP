@@ -16,4 +16,4 @@ var townSchema = new Schema({
 
 townSchema.index({"location" : "2dsphere"});
 
-module.exports = mongoose.model('town', townSchema);
+module.exports = mongoose.model('towns', townSchema);

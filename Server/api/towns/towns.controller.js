@@ -5,7 +5,7 @@
 'use strict';
 
 var _ = require('lodash');
-var User = require('./towns.model.js');
+var Town = require('./towns.model.js');
 
 exports.getTowns = function(req, res, next) {
     if(req.params.lat == null || req.params.long == null) {  //If the 'long' or 'lat' parameter is missing, return 400

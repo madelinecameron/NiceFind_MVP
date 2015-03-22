@@ -10,7 +10,8 @@ angular.module('solobuy.controllers', [])
 			console.log("Updating (1)...");
 			lastUpdate = new Date(new Date().getTime() + 60000);  //1 minute
 			console.log(lastUpdate);
-			$http.get('http://104.236.44.62:3000/search?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
+			//console.log('http://104.236.44.62:3000/items?lat=' + position.coords.latitude + '&long=' + position.coords.longitude);
+			$http.get('http://104.236.44.62:3000/items?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
 				success(function(data, status, headers, config) {
 					angular.forEach(data, function(value, key) {
 							//If value is greater than farest dist, assign value else re-assign farestDist
@@ -26,7 +27,7 @@ angular.module('solobuy.controllers', [])
 					return 0;
 				});
 
-				$http.get('http://104.236.44.62:3000/town?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&nearest=1').
+				$http.get('http://104.236.44.62:3000/towns?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&nearest=1').
 					success(function(data, status, headers, config) {
 						$scope.town = data.obj.name;
 						$scope.radius = 100;
@@ -51,7 +52,7 @@ angular.module('solobuy.controllers', [])
 					console.log("Updating (2)...");
 					lastUpdate = new Date(new Date().getTime() + 60000);  //1 minute
 					console.log(lastUpdate);
-					$http.get('http://104.236.44.62:3000/search?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
+					$http.get('http://104.236.44.62:3000/items?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
 						success(function(data, status, headers, config) {
 							$scope.items = data;
 						}).
@@ -62,7 +63,7 @@ angular.module('solobuy.controllers', [])
 							return 0;
 						});
 
-						$http.get('http://104.236.44.62:3000/town?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&nearest=1').
+						$http.get('http://104.236.44.62:3000/towns?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&nearest=1').
 							success(function(data, status, headers, config) {
 								$scope.town = data.obj.name;
 								$scope.radius = 100;
@@ -85,7 +86,7 @@ angular.module('solobuy.controllers', [])
 
 		$scope.loadMoreList = function() {
 			navigator.geolocation.getCurrentPosition(function(position) {
-				$http.get('http://104.236.44.62:3000/search?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&minDist=' + farestDist).
+				$http.get('http://104.236.44.62:3000/items?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&minDist=' + farestDist).
 					success(function(data, status, headers, config) {
 						//Don't try to be clever here. forEach makes this go *crazy*...
 						for(var i = 0; i < 100; i++) {
@@ -110,7 +111,7 @@ angular.module('solobuy.controllers', [])
 		}
 })
 .controller('itemCntrl', function($scope, $state, $stateParams, $http, $q) {
-  $http.get('http://104.236.44.62:3000/item/' + $stateParams.id).
+  $http.get('http://104.236.44.62:3000/items/' + $stateParams.id).
     success(function(data, status, headers, config) {
       $scope.item = data[0];
 			$scope.imageList = data[0].image_urls;
@@ -125,7 +126,7 @@ angular.module('solobuy.controllers', [])
 	navigator.geolocation.getCurrentPosition(function(position) {
 		var nearbyTowns = [];
 		var townText;
-		$http.get('http://104.236.44.62:3000/town?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&dist=100').
+		$http.get('http://104.236.44.62:3000/towns?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&dist=100').
 			success(function(data, status, headers, config) {
 				data.forEach(function(town) {
 					nearbyTowns.push(town.obj.name)
@@ -169,6 +170,20 @@ angular.module('solobuy.controllers', [])
 })
 .controller('loginCntrl', function($scope, $state, $q) {
 	$scope.login = function() {
+		$http.post('https://104.236.44.62:3001/users/login', {user: $scope.loginForm.username, password: $scope.loginForm.password}).
+			success(function(data, status, headers, config) {
+				if(data) {
+					$state.go('/');
+				}
+				else {
+					console.log("ERROR!");
+				}
+			}).
+			error(function(data, status, headers, config) {
+				console.log("Failed");
+				console.dir(config);
+				console.log("Error:" + status);
+			});
 		console.log($scope.loginForm.username);
 	}
 

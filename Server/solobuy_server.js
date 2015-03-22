@@ -8,26 +8,34 @@ var db = mongoose.connect(("mongodb://%username%:%password%@ds053300.mongolab.co
     db_creds.db.username).replace("%password%", db_creds.db.password)));  // Pulls username and password from conf file
 console.log("Database connection initiated successfully!");
 
-//var https_options = {
-//    name: 'Solobuy_HTTPS_Server',
-//    key: fs.readFileSync('/etc/ssl/self-signed/server.key'),
-//    certificate: fs.readFileSync('/etc/ssl/self-signed/server.crt')
-//};
+var https_options = {
+    name: 'Solobuy_HTTPS_Server',
+    key: fs.readFileSync('/etc/sslkeys/ssl.key'),
+    certificate: fs.readFileSync('/etc/sslkeys/ssl.crt')
+};
 
 var server = restify.createServer({name: 'Solobuy_HTTP_Server' });
-//var https_server = restify.createServer(https_options);
+var https_server = restify.createServer(https_options);
 server.pre(restify.pre.sanitizePath());
 
 //var port = process.argv[2] != null ? process.argv[2] : 3000; //If parameter exists, use as port, if not port 300
 server.listen(3000, function() {
-    console.log("Server listening on port %d", 3000);
+    console.log("HTTP Server listening on port %d", 3000);
+});
+
+https_server.listen(3001, function() {
+    console.log("HTTPS Server listening on port %d", 3001);
 });
 
 server.use(restify.fullResponse());
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
-require('./api/users/index')(server);
+https_server.use(restify.fullResponse());
+https_server.use(restify.queryParser());
+https_server.use(restify.bodyParser());
+
+require('./api/users/index')(https_server);
 require('./api/items/index')(server);
 require('./api/towns/index')(server);
 

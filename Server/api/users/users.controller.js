@@ -6,6 +6,7 @@
 
 var _ = require('lodash');
 var User = require('./users.model.js');
+var passwordHash = require('password-hash');
 
 exports.register = function(req, res, next) {
     User.create({
@@ -48,7 +49,12 @@ exports.me = function(req, res, next) {
 };
 
 exports.login = function(req, res, next) {
-    throw NOT_IMPLEMENTED;
+    console.log(req);
+    console.log(req.body.username);
+    return res.send(200);
+    User.find({username: req.body.username }, function(err, user) {
+        res.send(passwordHash.verify(req.body.password, user.password));
+    });
 };
 
 function handleError(res, err) {
