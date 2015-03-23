@@ -31,11 +31,7 @@ server.use(restify.fullResponse());
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
 
-https_server.use(restify.fullResponse());
-https_server.use(restify.queryParser());
-https_server.use(restify.bodyParser());
-
-require('./api/users/index')(https_server);
+require('./api/users/index')(server);
 require('./api/items/index')(server);
 require('./api/towns/index')(server);
 

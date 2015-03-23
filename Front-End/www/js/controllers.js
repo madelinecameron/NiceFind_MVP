@@ -168,9 +168,9 @@ angular.module('solobuy.controllers', [])
 .controller('accountCntrl', function($scope, $state, $q) {
   console.log("I don't do anything! :D")
 })
-.controller('loginCntrl', function($scope, $state, $q) {
-	$scope.login = function() {
-		$http.post('https://104.236.44.62:3001/users/login', {user: $scope.loginForm.username, password: $scope.loginForm.password}).
+.controller('loginCntrl', function($scope, $state, $http) {
+	$scope.login = function(user) {
+		$http.post('http://104.236.44.62:3000/users/login', {username: user.username, password: user.password}).
 			success(function(data, status, headers, config) {
 				if(data) {
 					$state.go('/');
@@ -184,16 +184,28 @@ angular.module('solobuy.controllers', [])
 				console.dir(config);
 				console.log("Error:" + status);
 			});
-		console.log($scope.loginForm.username);
 	}
 
 	$scope.register = function() {
 		$state.go('register'); //Redirect to register state
 	}
 })
-.controller('registerCntrl', function($scope, $state, $q) {
-	$scope.register = function() {
-		$state.go('register');
+.controller('registerCntrl', function($scope, $state, $q, $http) {
+	$scope.register = function(user) {
+		$http.post('http://104.236.44.62:3000/users/register', {username: user.username, password: user.password, email: user.email}).
+			success(function(data, status, headers, config) {
+				if(data) {
+					$state.go('tab.home');
+				}
+				else {
+					console.log("ERROR!");
+				}
+			}).
+			error(function(data, status, headers, config) {
+				console.log("Failed");
+				console.dir(config);
+				console.log("Error:" + status);
+			});
 	}
 });
 

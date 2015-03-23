@@ -10,15 +10,17 @@ var passwordHash = require('password-hash');
 
 exports.register = function(req, res, next) {
     User.create({
-        userName: req.params.userName,
-        pwdHash: req.params.pwdHash,
-        email: req.params.email
+        userName: req.body.username,
+        pwdHash: passwordHash.generate(req.body.password),
+        email: req.body.email
     }, function(err, result) {
-        if(err) {
-            return res.send(400, null);
+        if(!err) {
+            console.log("Successfully registered %s", req.body.username);
+            return res.send(200, true);
         }
         else {
-            return res.send(200);
+            console.log("Registration for %s failed!\nError: %s", req.body.username, err);
+            return res.send(400, false);
         }
     });
 };
@@ -49,11 +51,8 @@ exports.me = function(req, res, next) {
 };
 
 exports.login = function(req, res, next) {
-    console.log(req);
-    console.log(req.body.username);
-    return res.send(200);
-    User.find({username: req.body.username }, function(err, user) {
-        res.send(passwordHash.verify(req.body.password, user.password));
+    User.find({userName: req.body.username }, function(err, user) {
+        res.send(passwordHash.verify(req.body.password, user.pwdHash));
     });
 };
 

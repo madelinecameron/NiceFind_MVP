@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-    userName : { type: String, required: true },
+    userName : { type: String, required: true, unique: true },
     pwdHash: { type: String, required: true },
     email: { type: String, required: true },
     likesList : [{ type: String }]
