@@ -21,23 +21,30 @@ angular.module('solobuy', ['ionic', 'solobuy.controllers', 'solobuy.services'])
   });
 })
 .config(function($stateProvider, $urlRouterProvider)  {
-  $stateProvider.state('register', {
-      url: '/register',
-      templateUrl: 'templates/register.html',
-      controller: 'registerCntrl'
-    })
-    .state('login', {
-      url: '/login',
-      templateUrl: 'templates/login.html',
-      controller: 'loginCntrl'
-  });
+  //User management states
+  $stateProvider
+      .state('login', {
+        url: '/login',
+        templateUrl: 'templates/login.html',
+        controller: 'loginCntrl'
+      })
+      .state('register', {
+        url: '/register',
+        templateUrl: 'templates/register.html',
+        controller: 'registerCntrl'
+      });
+
+  //Abstract states
   $stateProvider
     .state('tab', {
       url: "/tab",
       abstract: true,
       templateUrl: "templates/tabs.html"
     });
-    $stateProvider.state('tab.home', {
+
+  //Home page states
+  $stateProvider
+    .state('tab.home', {
       url: '/home',
       views: {
         'home-tab': {
@@ -60,7 +67,10 @@ angular.module('solobuy', ['ionic', 'solobuy.controllers', 'solobuy.services'])
         }
       }
     });
-    $stateProvider.state('tab.search', {
+
+  //Search state
+  $stateProvider
+    .state('tab.search', {
       url: '/search',
       views: {
         'search-tab': {
@@ -69,7 +79,10 @@ angular.module('solobuy', ['ionic', 'solobuy.controllers', 'solobuy.services'])
         }
       }
     });
-    $stateProvider.state('tab.account', {
+
+  //Account state
+  $stateProvider
+    .state('tab.account', {
       url: '/account',
       views: {
         'account-tab': {

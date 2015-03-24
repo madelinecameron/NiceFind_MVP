@@ -2,6 +2,10 @@ var restify = require('restify'),
     mongoose = require('mongoose'),
     coords = require('coordinate-systems'),
     fs = require('fs'),
+    session = require('restify-session')({
+        debug: true,
+        persist: true
+    }),
     db_creds = require('./conf/db_conf.json');
 
 var db = mongoose.connect(("mongodb://%username%:%password%@ds053300.mongolab.com:53300/solobuy".replace("%username%",
@@ -30,6 +34,7 @@ https_server.listen(3001, function() {
 server.use(restify.fullResponse());
 server.use(restify.queryParser());
 server.use(restify.bodyParser());
+server.use(session.sessionManager);
 
 require('./api/users/index')(server);
 require('./api/items/index')(server);

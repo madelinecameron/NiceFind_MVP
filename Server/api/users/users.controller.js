@@ -16,11 +16,11 @@ exports.register = function(req, res, next) {
     }, function(err, result) {
         if(!err) {
             console.log("Successfully registered %s", req.body.username);
-            return res.send(200, true);
+            return res.send(200, {success: true, message: "Success!"});
         }
         else {
             console.log("Registration for %s failed!\nError: %s", req.body.username, err);
-            return res.send(400, false);
+            return res.send(400, {success: false, message: "Username is already taken!"});
         }
     });
 };
@@ -52,7 +52,12 @@ exports.me = function(req, res, next) {
 
 exports.login = function(req, res, next) {
     User.find({userName: req.body.username }, function(err, user) {
-        res.send(passwordHash.verify(req.body.password, user.pwdHash));
+        if(passwordHash.verify(req.body.password, user.pwdHash)) {
+            res.send({success: true, session: req.session});
+        }
+        else {
+            res.send({success: false, session: 0})
+        }
     });
 };
 

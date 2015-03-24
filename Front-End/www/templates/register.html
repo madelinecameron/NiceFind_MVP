@@ -1,20 +1,47 @@
 <ion-view title="Register">
-  <ion-content>
+  <ion-content scroll="false">
     <div class="list">
-      <label class="item item-input">
-        <input type="text" placeholder="Username" ng-model="user.username">
-      </label>
-      <label class="item item-input">
-        <input type="password" placeholder="Password" ng-model="user.password">
-      </label>
-      <label class="item item-input">
-        <input type="password" placeholder="Confirm Password" ng-model="user.confirmPass">
-      </label>
-      <label class="item item-input">
-        <input type="email" placeholder="Email" ng-model="user.email">
-      </label>
+      <form name="registerForm">
+        <label class="item item-input">
+          <input type="text" name="username" placeholder="Username"
+          ng-model="user.username" ng-maxlength="128" ng-required="true" ng-change="userChanged=true">
+        </label>
+        <div>
+          <label class="item item-input">
+            <input name="password" type="{{passType}}" placeholder="Password"
+            ng-model="user.password" ng-required="true" ng-change="passChanged=true">
+          </label>
+          <div class="item item-checkbox">
+            <label class="checkbox" ng-click="passType = (passType == 'password' ? 'text' : 'password')">
+              <input type="checkbox">
+            </label>
+            <h4>Show password</h4>
+          </div>
+        </div>
+        <label class="item item-input">
+          <input name="email" type="email" placeholder="Email" ng-model="user.email"
+          ng-required="true" ng-change="emailChanged=true">
+        </label>
+      </div>
+    </form>
+    <div ng-show="(registerForm.username.$error.maxlength||registerForm.username.$error.required||registerForm.email.$error.required||registerForm.email.$error.valid)&&(userChanged||passChanged||emailChanged)" class="ng-hide">
+      <span class="error" ng-show="registerForm.username.$error.maxlength&&userChanged">
+        Username needs to be less than 128 characters!
+      </span>
+      <span class="error" ng-show="registerForm.username.$error.required&&userChanged">
+        Username is required!
+      </span><br/>
+      <span class="error" ng-show="registerForm.password.$error.required&&passChanged">
+        Password is required!
+      </span><br/>
+      <span class="error" ng-show="registerForm.email.$error.required&&emailChanged">
+        Email is required!
+      </span>
+      <span class="error" ng-show="registerForm.email.$error.valid&&emailChanged">
+        Email is not valid!
+      </span>
     </div>
-    <button class="button button-block button-balanced" ng-click="register(user)">
+    <button class="button button-block button-balanced" ng-click="register(user)" ng-disabled="!registerForm.$valid">
       Register
     </button>
   </ion-content>

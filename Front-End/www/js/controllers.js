@@ -1,5 +1,5 @@
 'use strict';
-angular.module('solobuy.controllers', [])
+angular.module('solobuy.controllers', ['ionic'])
 .controller('homeCntrl', function($scope, $state, $http, $q) {
 	var lastUpdate = 0;
 	var farestDist = 0;  //Farest distance seen so far
@@ -168,15 +168,20 @@ angular.module('solobuy.controllers', [])
 .controller('accountCntrl', function($scope, $state, $q) {
   console.log("I don't do anything! :D")
 })
-.controller('loginCntrl', function($scope, $state, $http) {
+.controller('loginCntrl', function($scope, $state, $http, $ionicPopup) {
 	$scope.login = function(user) {
 		$http.post('http://104.236.44.62:3000/users/login', {username: user.username, password: user.password}).
 			success(function(data, status, headers, config) {
-				if(data) {
-					$state.go('/');
+				if(data.success) {
+					window.localStorage["sid"] = data.session;
+					console.log("SessionID: " + window.localStorage["sid"]);
+					$state.go('tab.home');
 				}
 				else {
-					console.log("ERROR!");
+					$ionicPopup.alert({
+						title: "Login failed",
+						template: "Username or password is invalid!"
+					});
 				}
 			}).
 			error(function(data, status, headers, config) {
@@ -190,22 +195,29 @@ angular.module('solobuy.controllers', [])
 		$state.go('register'); //Redirect to register state
 	}
 })
-.controller('registerCntrl', function($scope, $state, $q, $http) {
+.controller('registerCntrl', function($scope, $state, $q, $http, $timeout, $ionicPopup, $ionicLoading) {
+	$scope.passType = "password";
+	$scope.displayErrors = "none";
 	$scope.register = function(user) {
-		$http.post('http://104.236.44.62:3000/users/register', {username: user.username, password: user.password, email: user.email}).
-			success(function(data, status, headers, config) {
-				if(data) {
-					$state.go('tab.home');
-				}
-				else {
-					console.log("ERROR!");
-				}
-			}).
-			error(function(data, status, headers, config) {
-				console.log("Failed");
-				console.dir(config);
-				console.log("Error:" + status);
-			});
+		try {
+				$http.post('http://104.236.44.62:3000/users/register', {username: user.username, password: user.password, email: user.email}).
+					success(function(data, status, headers, config) {
+						$ionicLoading.show({
+								template: "Successfully registered! Redirecting...",
+								duration: 2000 //Show popup for 2000ms
+							});
+						$timeout($state.go('tab.home'), 6000); //Go to state tab.home in 6000ms
+					}).
+					error(function(data, status, headers, config) {
+						console.log(data.message);
+						$ionicPopup.alert({
+							template: data.message
+						});
+					});
+			}
+			catch(e) {
+				console.log("Error: " + e);
+			}
 	}
 });
 
