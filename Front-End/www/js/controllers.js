@@ -1,48 +1,49 @@
 'use strict';
-angular.module('solobuy.controllers', ['ionic'])
-.controller('homeCntrl', function($scope, $state, $http, $q) {
-	var lastUpdate = 0;
-	var farestDist = 0;  //Farest distance seen so far
+angular.module('nicefind.controllers', ['ionic'])
+.controller('homeCntrl', function($scope, $state, $stateParams, $timeout, Items, Towns, $ionicScrollDelegate) {
+	var init = false;
+	var maxDist, category;
+	$timeout(function() {
+		console.log("AAA" + $stateParams.category);
+	});
+	console.log(typeof $stateParams.category != "undefined");
+	if(typeof $stateParams.givenItems != "undefined" && !init) {
+		console.log("Loading items from search results!");
+		init = true;
+		maxDist = $stateParams.maxDist;
+		category = $stateParams.category;
+	}
+	else {
+		console.log("Loading items from query / dashboard!");
+		var lastUpdate = 0;
+		var farestDist = 0;  //Farest distance seen so far
 
-	console.log("Trying to update (1)...");
-	if(lastUpdate < new Date().getTime()) {  //Hack-ish caching! Woo!
-		navigator.geolocation.getCurrentPosition(function(position) {
-			console.log("Updating (1)...");
-			lastUpdate = new Date(new Date().getTime() + 60000);  //1 minute
-			console.log(lastUpdate);
-			//console.log('http://104.236.44.62:3000/items?lat=' + position.coords.latitude + '&long=' + position.coords.longitude);
-			$http.get('http://104.236.44.62:3000/items?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
-				success(function(data, status, headers, config) {
-					angular.forEach(data, function(value, key) {
-							//If value is greater than farest dist, assign value else re-assign farestDist
-							farestDist = (value.dis > farestDist ? value.dis : farestDist);
+		if(lastUpdate < new Date().getTime()) {  //Hack-ish caching! Woo!
+				navigator.geolocation.getCurrentPosition(function(position) {
+					if(typeof maxDist === 'undefined') { //If maxDist is undef, get all
+						Items.getAll(position, 0).then(function(response) {
+							angular.forEach(response.data, function(value, key) {
+									//If value is greater than farest dist, assign value else re-assign farestDist
+									farestDist = (value.dis > farestDist ? value.dis : farestDist);
+							});
+							$scope.items = response.data;
+						});
+					}
+					else {
+						Items.getSelection(category, farestDist, maxDist, position).then(function(response) {
+							$state.go('tab.home', { givenItems: response.data});
+							console.log($state.is('tab.home'));
+						})
+					}
+				 	Towns.getNearest(position).then(function(response) {
+						$scope.town = response.data.obj.name;
+						$scope.radius = 100;
 					});
-					console.log(farestDist);
-					$scope.items = data;
-				}).
-				error(function(data, status, headers, config) {
-					console.log("Failed");
-					console.dir(config);
-					console.log("Error:" + status);
-					return 0;
 				});
-
-				$http.get('http://104.236.44.62:3000/towns?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&nearest=1').
-					success(function(data, status, headers, config) {
-						$scope.town = data.obj.name;
-						$scope.radius = 100;
-					}).
-					error(function(data, status, headers, config) {
-						console.log("Failed");
-						console.log("Error:" + status);
-						$scope.town = "NaN";
-						$scope.radius = 100;
-						return 0;
-					});
-			});
-		}
-		else {
-			console.log("Failed");
+			}
+			else {
+				console.log("Failed");
+			}
 		}
 
 		$scope.refreshList = function() {
@@ -51,94 +52,73 @@ angular.module('solobuy.controllers', ['ionic'])
 				navigator.geolocation.getCurrentPosition(function(position) {
 					console.log("Updating (2)...");
 					lastUpdate = new Date(new Date().getTime() + 60000);  //1 minute
-					console.log(lastUpdate);
-					$http.get('http://104.236.44.62:3000/items?lat=' + position.coords.latitude + '&long=' + position.coords.longitude).
-						success(function(data, status, headers, config) {
-							$scope.items = data;
-						}).
-						error(function(data, status, headers, config) {
-							console.log("Failed");
-							console.dir(config);
-							console.log("Error:" + status);
-							return 0;
-						});
 
-						$http.get('http://104.236.44.62:3000/towns?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&nearest=1').
-							success(function(data, status, headers, config) {
-								$scope.town = data.obj.name;
-								$scope.radius = 100;
-							}).
-							error(function(data, status, headers, config) {
-								console.log("Failed");
-								console.log("Error:" + status);
-								$scope.town = "NaN";
-								$scope.radius = 100;
-								return 0;
+					$timeout(function() {
+							Items.getAll(position, 0).then(function(response) {
+							angular.forEach(response.data, function(value, key) {
+									//If value is greater than farest dist, assign value else re-assign farestDist
+									farestDist = (value.dis > farestDist ? value.dis : farestDist);
 							});
+							$scope.items = response.data;
+						})
+					}, 1000);
+
+					Towns.getNearest(position).then(function(response) {
+						$scope.town = response.data.obj.name;
+						$scope.radius = 100;
 					});
-				}
-				else {
-					$scope.$broadcast('scroll.refreshComplete');
-					$scope.$apply();
-					return false;
-				}
+				});
+
+				$scope.$digest();
+				$scope.$broadcast('scroll.refreshComplete');
+			}
+			else {
+				$scope.$digest();
+				$scope.$broadcast('scroll.refreshComplete');
+			}
 		};
 
 		$scope.loadMoreList = function() {
+			console.log("Calling load!");
 			navigator.geolocation.getCurrentPosition(function(position) {
-				$http.get('http://104.236.44.62:3000/items?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&minDist=' + farestDist).
-					success(function(data, status, headers, config) {
-						//Don't try to be clever here. forEach makes this go *crazy*...
-						for(var i = 0; i < 100; i++) {
-							$scope.items.push(data[i]);
-						}
-						$scope.$broadcast('scroll.infiniteScrollComplete');
-						return true;
-					}).
-					error(function(data, status, headers, config) {
-						console.log("Failed");
-						console.dir(config);
-						console.log("Error:" + status);
-						$scope.$broadcast('scroll.infiniteScrollComplete');
-						$scope.$apply();
-						return 0;
+				Items.getAll(position, farestDist).then(function(response) {
+					angular.forEach(response.data, function(value, key) {
+							//If value is greater than farest dist, assign value else re-assign farestDist
+							farestDist = (value.dis > farestDist ? value.dis : farestDist);
 					});
+					response.data.forEach(function(item) {
+						$scope.items.push(item);
+					});
+					$timeout(function() {
+						$scope.$broadcast('scroll.infiniteScrollComplete');
+						$ionicScrollDelegate.resize();
+					});
+
 				});
+			})
 		}
 
 		$scope.likeItem = function() {
 			console.log("I LIKE THIS!");
 		}
 })
-.controller('itemCntrl', function($scope, $state, $stateParams, $http, $q) {
-  $http.get('http://104.236.44.62:3000/items/' + $stateParams.id).
-    success(function(data, status, headers, config) {
-      $scope.item = data[0];
-			$scope.imageList = data[0].image_urls;
-    }).
-    error(function(data, status, headers, config) {
-      console.log("Failed");
-      console.log("Error:" + status);
-      return 0;
-    });
-})
-.controller('searchCntrl', function($scope, $state, $http, $q) {
-	navigator.geolocation.getCurrentPosition(function(position) {
-		var nearbyTowns = [];
-		var townText;
-		$http.get('http://104.236.44.62:3000/towns?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&dist=100').
-			success(function(data, status, headers, config) {
-				data.forEach(function(town) {
-					nearbyTowns.push(town.obj.name)
-				})
-			}).
-			error(function(data, status, headers, config) {
-				console.log("Failed");
-				console.dir(config);
-				console.log("Error:" + status);
-			});
-  		$scope.geo = { distance: 100, nearbyTowns: nearbyTowns }
+.controller('itemCntrl', function($scope, $stateParams, Items) {
+	Items.getOne($stateParams.id).then(function(response) {
+		console.dir(response.data);
+		$scope.item = response.data[0];
 	});
+})
+.controller('searchCntrl', function($scope, $state, Towns, Items) {
+	navigator.geolocation.getCurrentPosition(function(position) {
+		Towns.getFromDist(position, 100).then(function(response) {
+			var nearbyTowns = [];
+			response.data.forEach(function(town) {
+				nearbyTowns.push(town.obj.name)
+			});
+			$scope.geo = { distance: 100, nearbyTowns: nearbyTowns };
+		});
+	});
+
 	$scope.dragSlider = function() {
 		if($scope.geo.distance % 100 === 0) {
 			var lastUpdate = 0;
@@ -164,9 +144,13 @@ angular.module('solobuy.controllers', ['ionic'])
 			}
 		}
 	}
+	$scope.search = function(category) {
+		$state.go('tab.home.search', { category: category, maxDist: $scope.geo.distance });
+	}
 })
-.controller('accountCntrl', function($scope, $state, $q) {
-  console.log("I don't do anything! :D")
+.controller('searchResultsCntrl', function($stateParams, Items) {
+	console.log($stateParams.category);
+	console.log("HERE!");
 })
 .controller('loginCntrl', function($scope, $state, $http, $ionicPopup) {
 	$scope.login = function(user) {

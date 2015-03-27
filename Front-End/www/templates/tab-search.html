@@ -10,10 +10,10 @@
           <div class="input-label">
             Category
           </div>
-            <select>
-              <option>Antiques</option>
-              <option selected>Collectibles</option>
-              <option>Jewlery</option>
+            <select ng-model="category">
+              <option value="SANT">Antiques</option>
+              <option selected value="SCOL">Collectibles</option>
+              <option value="SJWL">Jewlery</option>
             </select>
           </label>
           <div class="item range range-positive">
@@ -27,7 +27,7 @@
             <p>
               <i><b>Includes: </b><a ng-repeat="town in geo.nearbyTowns">{{town}}{{$last ? '' : ', '}}</a></i>
             </p>
-            <button class="button button-full button-calm">
+            <button class="button button-full button-calm" ng-click="search(category)">
               <i class="icon ion-checkmark"></i>
               Sounds Good
             </button>

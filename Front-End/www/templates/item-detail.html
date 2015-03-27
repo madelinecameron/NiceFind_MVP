@@ -1,14 +1,9 @@
-<ion-view title="Solobuy">
+<ion-view title="NiceFind">
   <ion-content header-shrink scroll-event-interval="5">
     <div ng-model="item">
           <div class="item item-body">
             <h1 style="color:#3CB0BD">{{item.name}}</h1>
-    <!--<img class= "full-image" src={{item.image_urls}}>-->
-            <ion-slide-box>
-                <ion-slide ng-repeat="image in imageList">
-                    <img class="full-image" src={{image.full}}>
-                </ion-slide>
-            </ion-slide-box>
+            <center><img src="{{item.image_urls[0].full}}"></img></center>
             <h1>${{item.price}}</h1>
             <h3>Located in {{item.real_loc}}</h3>
             <p>{{item.description}}</p>
@@ -21,5 +16,3 @@
       </div>
     </ion-content>
 </ion-view>
-
-<!--ng-controller="ImgSlideCntrl" pager-click="imgslide(index)"-->

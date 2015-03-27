@@ -1,37 +1,24 @@
-angular.module('solobuy.services', [])
-
-/**
- * A simple example service that returns some data.
- */
-.factory('Search', function() {
-  // Might use a resource here that returns a JSON array
-
-  // Some fake testing data
-  var search = [
-    { id: 0, name: 'Scruff McGruff' },
-    { id: 1, name: 'G.I. Joe' },
-    { id: 2, name: 'Miss Frizzle' },
-    { id: 3, name: 'Ash Ketchum' }
-  ];
-
+angular.module('nicefind.services', [])
+.factory('Items', function($http) {
   return {
-    all: function() {
-		navigator.geolocation.getCurrentPosition(function(position) {
-			$http.get('http://104.236.44.62:3000/search?lat=' + position.coord.latitude + '&long=' + position.coords.longitude).
-				success(function(data, status, headers, config) {
-					console.log(data);
-					return data;
-				}).
-				error(function(data, status, headers, config) {
-					console.log("Failed");
-					console.log("Error:" + status);
-					return 0;
-				});
-		});
+    getAll: function(position, minDist) {
+      return $http.get('http://104.236.44.62:3000/items?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&minDist=' + minDist);
     },
-    get: function(searchId) {
-      // Simple index lookup
-      return search[searchId];
+    getSelection: function(category, minDist, maxDist, position) {
+      return $http.get('http://104.236.44.62:3000/items?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&minDist=' + minDist + '&maxDist=' + maxDist + '&category=' + category);
+    },
+    getOne: function(id) {
+      return $http.get('http://104.236.44.62:3000/items/' + id);
     }
   }
+})
+.factory('Towns', function($http) {
+  return {
+      getNearest: function(position) {
+        return $http.get('http://104.236.44.62:3000/towns?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&nearest=1');
+      },
+      getFromDist: function(position, dist) {
+        return $http.get('http://104.236.44.62:3000/towns?lat=' + position.coords.latitude + '&long=' + position.coords.longitude + '&dist=' + dist);
+      }
+    }
 });

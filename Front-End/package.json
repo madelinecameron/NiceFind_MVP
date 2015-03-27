@@ -1,7 +1,7 @@
 {
-  "name": "solobuy",
-  "version": "1.0.0",
-  "description": "Solobuy: An Ionic project",
+  "name": "NiceFind",
+  "version": "0.0.1",
+  "description": "NiceFind: An Ionic project",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^0.7.1",

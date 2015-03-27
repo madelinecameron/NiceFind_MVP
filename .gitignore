@@ -37,3 +37,4 @@ Server/dump.json
 *.pyc
 Front End/platforms/
 Server/anchor
+Front_End_Android_Build/

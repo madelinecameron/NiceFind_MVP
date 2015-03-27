@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'solobuy.services' is found in services.js
 // 'solobuy.controllers' is found in controllers.js
-angular.module('solobuy', ['ionic', 'solobuy.controllers', 'solobuy.services'])
+angular.module('nicefind', ['ionic', 'nicefind.controllers', 'nicefind.services'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -66,7 +66,16 @@ angular.module('solobuy', ['ionic', 'solobuy.controllers', 'solobuy.services'])
           }
         }
       }
-    });
+    })
+    .state('tab.home.search', {
+      url: '/:category/:maxDist',
+      views: {
+        'home-tab': {
+          templateUrl: 'templates/tab-home.html',
+          controller: 'homeCntrl'
+        }
+      }
+    })
 
   //Search state
   $stateProvider
