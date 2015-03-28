@@ -21,19 +21,6 @@ angular.module('nicefind', ['ionic', 'nicefind.controllers', 'nicefind.services'
   });
 })
 .config(function($stateProvider, $urlRouterProvider)  {
-  //User management states
-  $stateProvider
-      .state('login', {
-        url: '/login',
-        templateUrl: 'templates/login.html',
-        controller: 'loginCntrl'
-      })
-      .state('register', {
-        url: '/register',
-        templateUrl: 'templates/register.html',
-        controller: 'registerCntrl'
-      });
-
   //Abstract states
   $stateProvider
     .state('tab', {
@@ -67,15 +54,23 @@ angular.module('nicefind', ['ionic', 'nicefind.controllers', 'nicefind.services'
         }
       }
     })
-    .state('tab.home.search', {
-      url: '/:category/:maxDist',
+    .state('tab.results', {
+      url: '/home/:category/:maxDist',
       views: {
         'home-tab': {
           templateUrl: 'templates/tab-home.html',
-          controller: 'homeCntrl'
+          controller: 'homeCntrl',
+          resolve: {
+            category: function($stateParams) {
+              return $stateParams.category
+            },
+            maxDist: function($stateParams) {
+              return $stateParams.maxDist
+            },
+          }
         }
       }
-    })
+    });
 
   //Search state
   $stateProvider

@@ -27,8 +27,9 @@ exports.getItems = function(req, res, next) {
         maxDistance: maxDist,
         limit: 100,
         spherical: true,
-        query: (req.params.query != null ? req.params.query : {}) //If query parameter exists, add, if not {}
+        query: (req.params.category != null ? { "category" : req.params.category } : {}) //If query parameter exists, add, if not {}
     };
+    console.log(options);
     Items.geoNear(location, options, function(err, results, stats) {
         if(!err) {
             console.log("Sending all items within %s miles of (%s, %s) back to %s", (req.params.dist != null ?
